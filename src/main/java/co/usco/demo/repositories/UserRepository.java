@@ -8,4 +8,6 @@ import co.usco.demo.models.UserModel;
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long>{
     Optional<UserModel> findByUsername(String username);
+
+    Optional<UserModel> findByDocumentNumber(String documentNumber);
 }

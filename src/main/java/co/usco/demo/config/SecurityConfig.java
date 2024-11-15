@@ -2,10 +2,7 @@ package co.usco.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import co.usco.demo.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -24,31 +20,30 @@ public class SecurityConfig {
     @SuppressWarnings("deprecation")
        public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
         http
-        .authenticationProvider(authenticationProvider)
+        .authenticationProvider(customAuthenticationProvider())
         .authorizeRequests(auth -> auth 
-            .anyRequest().permitAll())
+            .requestMatchers("/home/**").permitAll()
+            .requestMatchers("/static/**", "/img/**", "/styles/**").permitAll()
+            .requestMatchers("/patient/**").hasAnyAuthority("ROLE_PATIENT")
+            .requestMatchers("/support-staff/**").hasAnyAuthority("ROLE_SUPPORT_STAFF")
+            .requestMatchers("/medical-staff/**").hasAnyAuthority("ROLE_MEDICAL_STAFF")
+            .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+            .anyRequest().authenticated())
             .formLogin(login -> login
+            .loginPage("/home/login")
+            .usernameParameter("documentNumber")
+            .loginProcessingUrl("/home/login")
             .permitAll()
             .successHandler(authenticationSuccessHandler()))
             .logout(logout -> logout
             .permitAll()
-            .logoutSuccessUrl("/login"));
+            .logoutSuccessUrl("/home/login"));
         return http.build();
     }
 
-    // AUTHENTICATION MANAGER
     @Bean
-    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    // AUTHENTICATION PROVIDER
-    @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsServiceImpl userDetailsServiceImpl) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsServiceImpl);
-        return provider;
+    public CustomAuthenticationProvider customAuthenticationProvider() {
+        return new CustomAuthenticationProvider();
     }
 
     // PASSWORD ENCODER
@@ -56,6 +51,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     // AUTHENTICATION SUCCESS HANDLER
     @Bean
@@ -89,7 +85,7 @@ public class SecurityConfig {
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return (request, response, exception) -> {
             request.getSession().invalidate();
-            response.sendRedirect("redirect:/login");
+            response.sendRedirect("redirect:/home/login");
         };
     }
 
