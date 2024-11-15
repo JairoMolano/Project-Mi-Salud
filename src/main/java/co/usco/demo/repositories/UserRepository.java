@@ -7,7 +7,5 @@ import co.usco.demo.models.UserModel;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long>{
-
-    Optional<UserModel> findByUserName(String userName);
-    
+    Optional<UserModel> findByUsername(String username);
 }

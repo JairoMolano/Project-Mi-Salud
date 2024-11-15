@@ -26,14 +26,13 @@ public class SecurityConfig {
         http
         .authenticationProvider(authenticationProvider)
         .authorizeRequests(auth -> auth 
-                .anyRequest().permitAll())
-                .formLogin(login -> login
-                .loginPage("/login")
-                .permitAll()
-                .successHandler(authenticationSuccessHandler()))
-                .logout(logout -> logout
-                .permitAll()
-                .logoutSuccessUrl("/login"));
+            .anyRequest().permitAll())
+            .formLogin(login -> login
+            .permitAll()
+            .successHandler(authenticationSuccessHandler()))
+            .logout(logout -> logout
+            .permitAll()
+            .logoutSuccessUrl("/login"));
         return http.build();
     }
 

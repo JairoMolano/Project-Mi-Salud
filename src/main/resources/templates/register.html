@@ -19,14 +19,8 @@
 </head>
 <body>
 
-  <!--Nav-->  
-  <ul class="nav p-3">
-    <li class="nav-item">
-      <a href="home.html">
-        <img src="/img/logo-2.png" alt="" width="80" height="50">
-      </a>
-    </li>
-  </ul>
+  <!--nav from shared_components-->  
+  <div th:replace="shared_components/auth-nav :: auth-nav"></div>
 
   <!--Register form-->
   <div class="container py-5">
@@ -58,7 +52,7 @@
                 </form>
                 <br>
                 <div class="text-center">
-                <a href="login.html">¿Ya tienes una cuenta? Ingresa aqui</a>
+                <a th:href="@{/home/login}">¿Ya tienes una cuenta? Ingresa aqui</a>
                 </div>
                 </div>
             </div>

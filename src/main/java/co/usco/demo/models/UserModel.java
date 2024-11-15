@@ -31,8 +31,14 @@ public class UserModel {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(name = "document_type")
+    private String documentType;
+
+    @Column(name = "document_number")
+    private String documentNumber;
+
     @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     @Column(name = "password")
     private String password;

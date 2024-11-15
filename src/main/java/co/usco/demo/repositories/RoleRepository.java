@@ -7,7 +7,5 @@ import co.usco.demo.models.RoleModel;
 
 @Repository
 public interface RoleRepository extends JpaRepository<RoleModel, Long>{
-
     Optional<RoleModel> findByRoleName(String roleName);
-
 }
