@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--Bootstrap 5.3.3 CSS-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+  <!--Customs CSS-->
+  <link rel="stylesheet" href="/styles/home.css">
+  <link rel="stylesheet" href="/styles/components.css">
+
+  <!--Tab-->
+  <title>Mi Salud | Inicio</title>
+  <link rel="shortcut icon" href="/img/tab-icon.png" type="image/x-icon">
+
+</head>
+<body>
+  
+  <!--Navbar from shared_components-->
+  <div th:replace="~{components/navbar :: navbar}"></div>
+
+  <!--Navbar for home page-->
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="#featured">Destacados</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#services">Servicios</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#news">Novedades</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#footer">Mas informacion</a>
+    </li>
+  </ul>
+
+  <!--Carousel with featured elements-->
+  <div id="featured">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="8000">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="/img/carousel-image-1.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="/img/carousel-image-2.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="/img/carousel-image-3.png" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+  <!--Services section-->
+  <div id="services" class="services p-5 m-5">
+    <div class="container my-5">
+      <div class="row align-items-center">
+        <div class="col-md-5">
+          <h1>Tus servicios de salud</h1>
+          <p class="pe-5">
+            ¡Haz la gestión de tus citas medicas y otras solicitudes fácilmente a través del Portal Salud!
+          </p>
+        </div>
+        <div class="col-md-7">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/calendar-icon.png" alt="" class="me-3" width="100">
+                <a href="">Agenda tu próxima consulta en segundos.</a>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/scheduled-icon.png" alt="" class="me-3" width="100">
+                <a href="">Sigue el estado de tus solicitudes y citas pendientes.</a>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/authorized-icon.png" alt="" class="me-3" width="100">
+                <a href="">Gestiona tus autorizaciones de forma fácil.</a>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/document-icon.png" alt="" class="me-3" width="100">
+                <a href="">Accede a tus documentos médicos cuando lo necesites.</a>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/history-icon.png" alt="" class="me-3" width="100">
+              <a href="">Consulta tus antecedentes médicos.</a>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/medicines-icon.png" alt="" class="me-3" width="100">
+                <a href="">Recibe tus medicamentos de forma rápida y segura.</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--News section-->
+  <div class="news container">
+    <div class="row align-items-center">
+      <div class="col-9">
+        <div id="news" class="news-cards p-1">
+          <div class="container  my-1">
+           <div id="newsCarousel" class="carousel slide">
+             <div class="carousel-inner">
+               <div class="carousel-item">
+                 <div class="d-flex justify-content-center">
+                   <div class="card mb-3" style="max-width: 1000px;">
+                     <div class="row g-0">
+                       <div class="col-md-4">
+                         <div class="card-body p-5">
+                           <h5 class="card-title">Descubre nuevas opciones de salud</h5>
+                           <hr>
+                           <p class="card-text">Ampliamos nuestra oferta de servicios médicos. Ahora puedes agendar citas con especialistas en nuestro portal.</p>
+                         </div>
+                       </div>
+                       <div class="col-md-8">
+                         <img src="/img/new-image-3.png" class="img-fluid rounded-end" alt="...">
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               <div class="carousel-item">
+                 <div class="d-flex justify-content-center">
+                   <div class="card mb-3" style="max-width: 1000px;">
+                     <div class="row g-0">
+                       <div class="col-md-4">
+                         <div class="card-body p-5">
+                           <h5 class="card-title">Resultados de exámenes más rápidos</h5>
+                           <hr>
+                           <p class="card-text">Obtén los resultados de tus exámenes de laboratorio y estudios de imagen en tiempo récord. ¡Más comodidad y tranquilidad para ti!</p>
+                         </div>
+                       </div>
+                       <div class="col-md-8">
+                         <img src="/img/new-image-2.png" class="img-fluid rounded-end" alt="...">
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               <div class="carousel-item active">
+                 <div class="d-flex justify-content-center">
+                   <div class="card mb-3" style="max-width: 1000px;">
+                     <div class="row g-0">
+                       <div class="col-md-4">
+                         <div class="card-body p-5">
+                           <h5 class="card-title">Atención personalizada 24/7</h5>
+                           <hr>
+                           <p class="card-text">Contacta a nuestros profesionales de la salud en cualquier momento a través de nuestras lineas de atención. Resuelve tus dudas y obtén respuestas inmediatas.</p>
+                         </div>
+                       </div>
+                       <div class="col-md-8">
+                         <img src="/img/new-image-1.png" class="img-fluid rounded-end" alt="...">
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+               <span class="visually-hidden">Previous</span>
+             </button>
+             <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+               <span class="carousel-control-next-icon" aria-hidden="true"></span>
+               <span class="visually-hidden">Next</span>
+             </button>
+           </div>
+          </div>
+         </div>
+      </div>
+      <div class="col-3">
+        <h1>Novedades</h1>
+        <p>Descubre un mundo de posibilidades para cuidar de tu salud. Con nuestro portal, tendrás acceso a toda la información y servicios que necesitas, desde la comodidad de tu hogar.</p>
+      </div>
+    </div>
+  </div>
+
+  <br><br><br><br><br><br><b><br>    
+
+  <!--Footer from shared_components-->
+  <div th:replace="~{components/footer :: footer}"></div>
+
+  <!--Bootstrap 5.3.3 JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

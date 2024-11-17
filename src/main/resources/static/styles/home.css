@@ -1,0 +1,93 @@
+/* Navbar for home page */
+.nav{
+    background-color: #303432;
+    .nav-link{
+        text-decoration: none;
+        color: white;
+        font-size: large;
+    }
+    .nav-link.active{
+        color: #5eb08b;
+    }
+    .nav-link:hover{
+        color: #5eb08b;
+    }
+}
+
+/* Carousel with featured elements */
+.carousel-inner{
+    max-height: 440px;
+}
+
+/* Services section */
+.services{
+    h1{
+        font-size: 5em;
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+        line-height: 1;
+    }
+    .card{
+        align-items: center;
+        border-color: #5eb08b;
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            color: #5eb08b;
+        }
+    }
+}
+
+/* News section */
+.news{
+    h1{
+        font-size: 4em;
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+        line-height: 1;
+    }
+    p{
+        font-size: 18px;
+    }
+}
+
+/* News cards */
+.news-cards{
+    .carousel-control-prev-icon{
+        background-color: #303432;
+        border: solid 2px black;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+    }
+    .carousel-control-next-icon{
+        background-color: #303432;
+        border: solid 2px black;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+    }
+    .carousel-control-next{
+        left: 50%;
+        transform: translateY(55%);
+    }
+    .carousel-control-prev{
+        left: 42%;
+        transform: translateY(55%);
+    }
+    .card{
+        background-color: #a7dac2;
+        border-color: white;
+        .card-title{
+            font-size: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .card-text{
+            font-size: 18px;
+        }
+    }
+}

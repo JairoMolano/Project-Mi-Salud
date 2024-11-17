@@ -1,0 +1,23 @@
+.navbar{
+    background-color: #cbcaca;
+    
+}
+
+main{
+    .top-nav{
+        background-color: #5eb08b;
+    }
+}
+
+.welcome{
+    .card{
+        background-color: #cbcaca;
+        border-radius: 30px;
+    }
+}
+
+.services{
+    .card{
+        border-color: #5eb08b;
+    }
+}
