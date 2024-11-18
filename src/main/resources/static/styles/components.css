@@ -20,6 +20,12 @@
     }
 }
 
+.btn-primary{
+    font-size: large;
+    background-color: #5eb08b;
+    border: solid 2px #5eb08b;
+}
+
 .footer{
     background-color: #303432;
     color: white;

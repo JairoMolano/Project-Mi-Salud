@@ -155,7 +155,7 @@ public class DataInitializerService {
             .documentNumber("6789012345")
             .gender("Female")
             .phoneNumber("3506789012")
-            .email("laura.fernandez@example.com")
+            .email("jmolanosalgado@gmail.com")
             .address("Avenida 40 # 50-60")
             .department("Bolivar")
             .city("Cartagena")

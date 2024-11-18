@@ -23,42 +23,38 @@
   <div th:replace="~{components/auth-nav :: auth-nav}"></div>
 
   <!--Register form-->
-  <div class="container py-5">
-    <div class="row align-items-center">
-    <div class="col-6">
-        <img src="/img/login-image.png" alt="" width="500" height="500">
-    </div>
-    <div class="col-6">
-        <div class="card">
-            <div class="card-body">
-                <h1 class="mb-3 py-3 text-center">Registrate</h1>
-                <form th:action="@{/auth/register}" method="post">
-                <div class="mb-3">
-                    <label for="documentType" class="form-label">Tipo de documento</label>
-                    <select class="form-select" id="documentType" name="documentType">
-                        <option value="cc">Cédula de ciudadanía</option>
-                        <option value="ti">Tarjeta de identidad</option>
-                        <option value="ce">Cédula de extranjería</option>
-                        <option value="passport">Pasaporte</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="documentNumber" class="form-label">Numero de documento</label>
-                    <input type="text" class="form-control" id="documentNumber" name="documentNumber">
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Continuar</button>
-                </div>
-                </form>
-                <br>
-                <div class="text-center">
-                <a th:href="@{/auth/login}">¿Ya tienes una cuenta? Ingresa aqui</a>
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  </div>  
+  <div class="container mt-5 align-items-center justify-content-center">
+      <div class="card">
+          <div class="card-body">
+              <h1 th:text="#{register}" aria-label="#{register}" class="mb-3 py-3 text-center"></h1>
+              <form th:action="@{/auth/register}" method="post">
+                  <div class="mb-3">
+                      <label th:text="#{documentType}" aria-label="{documentType}" for="documentType" class="form-label"></label>
+                      <select class="form-select" id="documentType" name="documentType" required>
+                          <option th:text="#{cc}" aria-label="#{cc}" value="cc"></option>
+                          <option th:text="#{ti}" aria-label="#{ti}" value="ti"></option>
+                          <option th:text="#{ce}" aria-label="#{ce}" value="ce"></option>
+                          <option th:text="#{passport}" aria-label="#{passport}" value="passport"></option>
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label th:text="#{documentNumber}" aria-label="#{documentNumber}" for="documentNumber" class="form-label"></label>
+                      <input type="text" class="form-control" id="documentNumber" name="documentNumber" required>
+                  </div>
+                  <div th:if="${error != null}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                  </div> 
+                  <div class="d-grid">
+                      <button th:text="#{continue}" aria-label="#{continue}" type="submit" class="btn btn-primary"></button>
+                  </div>
+              </form>
+              <br>
+              <div class="text-center">
+                  <a th:text="#{alreadyHaveAccount}" aria-label="#{alreadyHaveAccount}" th:href="@{/auth/login}"></a>
+              </div>
+          </div>
+      </div>
+  </div>
 
   <!--Bootstrap 5.3.3 JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

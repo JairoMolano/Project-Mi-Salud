@@ -1,24 +1,21 @@
 package co.usco.demo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import co.usco.demo.models.UserModel;
 import co.usco.demo.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -29,46 +26,37 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MessageSource messageSource;
+
+    private String getMessage(String key) {
+        return messageSource.getMessage(key, null, Locale.getDefault());
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
-        // Get username (docuemntNumber) and password
         String documentNumber = authentication.getName();
         String password = authentication.getCredentials().toString();
-
-        // Get documentType from request
-        String documentType = getDocumentTypeFromRequest();
-
-        // Search user in the database
+        String documentType = "cc"; // Pending to implement functionality to get the document type
         UserModel user = userService.findByDocumentNumberAndDocumentType(documentNumber, documentType);
 
+        if (user == null) {
+            throw new BadCredentialsException(getMessage("auth.documentInvalid"));
+        }
 
-        // Verify if the user is active
         if (!user.isUserActive()) {
-            throw new DisabledException("User is not active");
+            throw new BadCredentialsException(getMessage("auth.unregisteredUser"));
         }
 
-        // Verify password
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("Incorrect password");
+            throw new BadCredentialsException(getMessage("auth.passwordInvalid"));
         }
 
-        // Convert roles to authorities
         Set<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                 .collect(Collectors.toSet());
 
-        // Return authenticated user
         return new UsernamePasswordAuthenticationToken(documentNumber, password, authorities);
-    }
-
-    private String getDocumentTypeFromRequest() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes != null) {
-            HttpServletRequest request = attributes.getRequest();
-            return request.getParameter("documentType");
-        }
-        throw new AuthenticationServiceException("Document type not found in the request");
     }
 
     @Override

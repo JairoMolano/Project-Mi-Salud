@@ -1,8 +1,13 @@
 package co.usco.demo.config;
 
+import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,13 +20,16 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // Security Filter Chain
+    @Autowired
+    private MessageSource messageSource;
+
     @Bean
     @SuppressWarnings("deprecation")
        public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
         http
         .authenticationProvider(customAuthenticationProvider())
         .authorizeRequests(auth -> auth 
+            .requestMatchers("/change-language").permitAll()
             .requestMatchers("/home/**").permitAll()
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/static/**", "/img/**", "/styles/**").permitAll()
@@ -35,26 +43,25 @@ public class SecurityConfig {
             .usernameParameter("documentNumber")
             .loginProcessingUrl("/auth/login")
             .permitAll()
-            .successHandler(authenticationSuccessHandler()))
+            .successHandler(authenticationSuccessHandler())
+            .failureHandler(authenticationFailureHandler()))
             .logout(logout -> logout
             .permitAll()
+            .logoutUrl("/auth/logout")
             .logoutSuccessUrl("/auth/login"));
         return http.build();
     }
 
-    // Custom Authentication Provider
     @Bean
     public CustomAuthenticationProvider customAuthenticationProvider() {
         return new CustomAuthenticationProvider();
     }
 
-    // Password Encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Authentication Success Handler
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, authentication) -> {
@@ -81,12 +88,16 @@ public class SecurityConfig {
         };
     }
 
-    // Authentication Failure Handler
-    @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return (request, response, exception) -> {
-            request.getSession().invalidate();
-            response.sendRedirect("redirect:/auth/login");
+            String errorMessage;
+            if (exception instanceof BadCredentialsException || exception instanceof DisabledException) {
+                errorMessage = exception.getMessage();
+            } else {
+                errorMessage = messageSource.getMessage("auth.somethingWentWrong", null, Locale.getDefault());
+            }
+            request.getSession().setAttribute("error", errorMessage);
+            response.sendRedirect("/auth/login");
         };
     }
 

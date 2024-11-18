@@ -26,16 +26,16 @@
   <!--Navbar for home page-->
   <ul class="nav justify-content-center">
     <li class="nav-item">
-      <a class="nav-link" aria-current="page" href="#featured">Destacados</a>
+      <a th:text="#{featured}" class="nav-link" href="#featured" aria-label="#{featured}"></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#services">Servicios</a>
+      <a th:text="#{services}" class="nav-link" href="#services" aria-label="#{services}"></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#news">Novedades</a>
+      <a th:text="#{news}" class="nav-link" href="#news" aria-label="#{news}"></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#footer">Mas informacion</a>
+      <a th:text="#{moreInformation}" class="nav-link" href="#footer" aria-label="#{moreInformation}"></a>
     </li>
   </ul>
 
@@ -69,47 +69,45 @@
     <div class="container my-5">
       <div class="row align-items-center">
         <div class="col-md-5">
-          <h1>Tus servicios de salud</h1>
-          <p class="pe-5">
-            ¡Haz la gestión de tus citas medicas y otras solicitudes fácilmente a través del Portal Salud!
-          </p>
+          <h1 th:text="#{servicesTitle}" aria-label="#{servicesTitle}"></h1>
+          <p th:text="#{servicesDescription}" aria-label="#{servicesDescription}" class="pe-5"></p>
         </div>
         <div class="col-md-7">
           <div class="row">
             <div class="col-md-6 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/calendar-icon.png" alt="" class="me-3" width="100">
-                <a href="">Agenda tu próxima consulta en segundos.</a>
+                <a th:text="#{services.service1}" aria-label="#{services.service1}" href=""></a>
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/scheduled-icon.png" alt="" class="me-3" width="100">
-                <a href="">Sigue el estado de tus solicitudes y citas pendientes.</a>
+                <a th:text="#{services.service2}" aria-label="#{services.service2}" href=""></a>
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/authorized-icon.png" alt="" class="me-3" width="100">
-                <a href="">Gestiona tus autorizaciones de forma fácil.</a>
+                <a th:text="#{services.service3}" aria-label="#{services.service3}" href=""></a>
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/document-icon.png" alt="" class="me-3" width="100">
-                <a href="">Accede a tus documentos médicos cuando lo necesites.</a>
+                <a th:text="#{services.service4}" aria-label="#{services.service4}" href=""></a>
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/history-icon.png" alt="" class="me-3" width="100">
-              <a href="">Consulta tus antecedentes médicos.</a>
+              <a th:text="#{services.service5}" aria-label="#{services.service5}" href=""></a>
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/medicines-icon.png" alt="" class="me-3" width="100">
-                <a href="">Recibe tus medicamentos de forma rápida y segura.</a>
+                <a th:text="#{services.service6}" aria-label="#{services.service6}" href=""></a>
               </div>
             </div>
           </div>
@@ -132,9 +130,9 @@
                      <div class="row g-0">
                        <div class="col-md-4">
                          <div class="card-body p-5">
-                           <h5 class="card-title">Descubre nuevas opciones de salud</h5>
+                           <h5 th:text="#{news.new1Title}" aria-label="#{news.new1Title}" class="card-title"></h5>
                            <hr>
-                           <p class="card-text">Ampliamos nuestra oferta de servicios médicos. Ahora puedes agendar citas con especialistas en nuestro portal.</p>
+                           <p th:text="#{news.new1Description}" aria-label="#{news.new1Description}" class="card-text"></p>
                          </div>
                        </div>
                        <div class="col-md-8">
@@ -150,9 +148,9 @@
                      <div class="row g-0">
                        <div class="col-md-4">
                          <div class="card-body p-5">
-                           <h5 class="card-title">Resultados de exámenes más rápidos</h5>
+                           <h5 th:text="#{news.new2Title}" aria-label="#{news.new2Title}" class="card-title"></h5>
                            <hr>
-                           <p class="card-text">Obtén los resultados de tus exámenes de laboratorio y estudios de imagen en tiempo récord. ¡Más comodidad y tranquilidad para ti!</p>
+                           <p th:text="#{news.new2Description}" aria-label="#{news.new2Description}" class="card-text"></p>
                          </div>
                        </div>
                        <div class="col-md-8">
@@ -168,9 +166,9 @@
                      <div class="row g-0">
                        <div class="col-md-4">
                          <div class="card-body p-5">
-                           <h5 class="card-title">Atención personalizada 24/7</h5>
+                           <h5 th:text="#{news.new3Title}" aria-label="#{news.new3Title}" class="card-title"></h5>
                            <hr>
-                           <p class="card-text">Contacta a nuestros profesionales de la salud en cualquier momento a través de nuestras lineas de atención. Resuelve tus dudas y obtén respuestas inmediatas.</p>
+                           <p th:text="#{news.new3Description}" aria-label="#{news.new3Description}" class="card-text"></p>
                          </div>
                        </div>
                        <div class="col-md-8">
@@ -194,8 +192,8 @@
          </div>
       </div>
       <div class="col-3">
-        <h1>Novedades</h1>
-        <p>Descubre un mundo de posibilidades para cuidar de tu salud. Con nuestro portal, tendrás acceso a toda la información y servicios que necesitas, desde la comodidad de tu hogar.</p>
+        <h1 th:text="#{newsTitle}" aria-label="#{newsTitle}" ></h1>
+        <p th:text="#{newsDescription}" aria-label="#{newsDescription}" ></p>
       </div>
     </div>
   </div>

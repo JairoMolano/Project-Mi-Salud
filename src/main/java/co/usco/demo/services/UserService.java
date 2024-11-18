@@ -27,6 +27,5 @@ public class UserService {
     public void save(UserModel user) {
         userRepository.save(user);
     }
-
     
 }

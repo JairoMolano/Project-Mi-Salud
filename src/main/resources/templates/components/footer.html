@@ -6,13 +6,13 @@
           <img src="/img/logo-2.png" width="180" height="120" alt="">
         </div>
         <div class="col-2">
-          <a th:href="@{/home/MiSalud}">Inicio</a><br>
-          <a href="">Quienes somos</a><br>
-          <a href="">Nuestras instalaciones</a><br>
-          <a th:href="@{/home/contacts}">Contactanos</a><br>
+          <a th:text="#{home}" aria-label="#{home}" th:href="@{/home/MiSalud}"></a><br>
+          <a th:text="#{whoWeAre}" aria-label="#{whoWeAre}" href=""></a><br>
+          <a th:text="#{ourInstallations}" aria-label="#{fourInstallations}" href=""></a><br>
+          <a th:text="#{contacts}" aria-label="#{contacts}" th:href="@{/home/contacts}"></a><br>
         </div>
         <div class="col-3">
-          <h3>Lineas de atencion</h3>
+          <h3 th:text="#{attentionLines}" aria-label="#{attentionLines}"></h3>
           <hr>
           <p>Linea nacional: 0000</p>
           <p>Bogota: 0000</p>
@@ -24,7 +24,7 @@
           <p>Cartagena: 0000</p>
         </div>
         <div class="col-3">
-          <h3>Oficinas</h3>
+          <h3 th:text="#{offices}" aria-label="#{offices}"></h3>
           <hr>
           <p>Bogota</p>
           <p>Carrera 00 #00-00</p>
@@ -34,7 +34,7 @@
           <p>Carrera 00 #00-00</p>
         </div>
         <div class="col-2">
-          <h3>Redes Sociales</h3>
+          <h3 th:text="#{socialNetworks}" aria-label="#{socialNetworks}"></h3>
           <hr>
           <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i> Facebook</a><br>
           <a href="https://x.com" target="_blank"><i class="bi bi-twitter-x"></i> Twitter</a><br>

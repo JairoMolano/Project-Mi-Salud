@@ -1,5 +1,20 @@
 .nav{
     background-color: #5eb08b;
+    .nav-link{
+        color: black;
+        font-size: large;
+    }
+    .nav-link:active{
+        color: white;
+    }
+    .nav-link:hover{
+        color: white;
+    }
+}
+
+.container{
+    
+    width: 600px;
 }
 
 .card{

@@ -11,29 +11,34 @@
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/home/MiSalud}">Inicio</a>
+                <a th:text="#{home}" aria-label="#{home}" class="nav-link active" aria-current="page" th:href="@{/home/MiSalud}"></a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Nosotros
-                </a>
+                <a  th:text="#{aboutUs}" aria-label="#{aboutUs}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Quienes somos</a></li>
-                  <li><a class="dropdown-item" href="#">Nuestras instalaciones</a></li>
+                  <li><a th:text="#{whoWeAre}" aria-label="#{whoWeAre}" class="dropdown-item" href="#"></a></li>
+                  <li><a  th:text="#{ourInstallations}" aria-label="#{ourInstallations}" class="dropdown-item" href="#"></a></li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/home/contacts}">Contactanos</a>
+                <a th:text="#{contacts}" aria-label="#{contacts}" class="nav-link" th:href="@{/home/contacts}"></a>
               </li>
-              
+              <li class="nav-item dropdown">
+                <a  th:text="#{lenguage}" aria-label="#{lenguage}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" th:href="@{/change-language?lang=es}">Español</a></li>
+                  <li><a class="dropdown-item" th:href="@{/change-language?lang=en}">English</a></li>
+                  <li><a class="dropdown-item" th:href="@{/change-language?lang=pt}">Portuguese</a></li>
+                </ul>
+              </li>
             </ul>
           </div>
             <span>
-            <button type="button" class="btn btn-primary" th:onclick="|window.location.href='@{/auth/login}'|">Ingresa</button>
-            <button type="button" class="btn btn-secondary" th:onclick="|window.location.href='@{/auth/register}'|">Registrate</button>
+            <button th:text="#{login}" aria-label="#{login}" type="button" class="btn btn-primary" th:onclick="|window.location.href='@{/auth/login}'|"></button>
+            <button th:text="#{register}" aria-label="#{register}" type="button" class="btn btn-secondary" th:onclick="|window.location.href='@{/auth/register}'|"></button>
             </span>
           </span>
         </div>
     </nav>
-</div>
+  </div>
 </html>
