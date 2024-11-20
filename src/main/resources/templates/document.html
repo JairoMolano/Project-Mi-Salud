@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+        <label for="file">Seleccionar PDF:</label>
+        <input type="file" name="file" id="file" accept="application/pdf" required/>
+        
+        <label for="documentType">Tipo de Documento:</label>
+        <select name="documentType" id="documentType" required>
+            <option value="LABORATORY_RESULT">Resultado de Laboratorio</option>
+            <option value="REDIOGRAPHY">Radiografía</option>
+            <option value="OTHER">Otro</option>
+        </select>
+    
+        <label for="patientId">Paciente:</label>
+        <input type="text" name="patientId" id="patientId" required/>
+        
+        <button type="submit">Subir</button>
+    </form>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns="" lang="es">
 <head>
 
   <meta charset="UTF-8">
@@ -22,8 +22,82 @@
   <!--patient-navbar from shared_components-->  
   <div th:replace="~{components/patient-navbar :: patient-navbar}"></div>
 
+  <!--Main content-->
+  <div class="container mt-5">
+    <h2 class="mb-4">Resultados Médicos</h2>
+
+
+    <form th:action="@{/patient/filter-document}" method="post">
+      <label for="documentTypeFilter" class="form-label">Filtrar documentos:</label>
+      <select id="documentTypeFilter" name="documentType" class="form-select">
+          <option value="">Todos</option>
+          <option value="LABORATORY_RESULT">Resultado de Laboratorio</option>
+          <option value="REDIOGRAPHY">Radiografía</option>
+          <option value="OTHER">Otro</option>
+      </select>
+      <button type="submit">Aplicar</button>
+    </form>
+  
+  
+
+    <div class="row">
+      <div class="col-12" th:if="${documents.empty}">
+        <div class="alert alert-info text-center">
+            <img src="/img/logo-1.png" alt="No hay documentos" style="width: 150px; margin-bottom: 15px;">
+            <p>No hay documentos disponibles.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4" th:each="document : ${documents}">
+        <div class="card">
+          <div class="card-body">
+            <div 
+              th:id="'pdf-container-' + ${document.id}" 
+              style="width: 100%; height: 253px; border: 1px solid #ccc; overflow: hidden; position: relative;">
+            </div>
+            <h5 class="card-title mt-3" th:text="${document.name}"></h5>
+            <p class="card-text" th:text="${#dates.format(document.uploadDate, 'dd/MM/yyyy HH:mm a')}"></p>
+            <p class="card-text">Subido por: <span th:text="${document.uploadBy.firstName}"></span> <span th:text="${document.uploadBy.lastName}"></span></p>
+            <a th:href="@{'/patient' + '/download/' + ${document.id}}" class="btn btn-primary btn-sm" target="_blank">Ver</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!--Bootstrap 5.3.3 JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        document.querySelectorAll('[id^="pdf-container-"]').forEach(container => {
+            const documentId = container.id.split('-')[2];
+            const url = `/patient/download/${documentId}`;
+            pdfjsLib.getDocument(url).promise.then(pdf => {
+                pdf.getPage(1).then(page => {
+                    const viewport = page.getViewport({ scale: 1 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    canvas.style.position = "absolute";
+                    canvas.style.top = "0";
+                    canvas.style.left = "0";
+                    canvas.style.width = "100%";
+                    canvas.style.height = "100%";
+                    canvas.style.objectFit = "cover";
+                    container.appendChild(canvas);
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            }).catch(error => {
+                console.error(`Error al cargar el PDF con ID ${documentId}:`, error);
+                container.innerHTML = "<p>Error al cargar el documento</p>";
+            });
+        });
+    </script>
 
 </body>
 </html>

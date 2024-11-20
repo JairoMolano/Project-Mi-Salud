@@ -1,32 +1,36 @@
 package co.usco.demo.controllers;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.usco.demo.models.UserModel;
+import co.usco.demo.models.constants.DocumentType;
 import co.usco.demo.models.constants.MedicalSpecialty;
 import co.usco.demo.services.AppointmentService;
 import co.usco.demo.services.ControllerHelperService;
-import co.usco.demo.services.UserService;
+import co.usco.demo.services.DocumentService;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/patient")
 public class PatientController {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private AppointmentService appointmentService;
 
     @Autowired
     private ControllerHelperService controllerHelperService;
+
+    @Autowired
+    private DocumentService documentService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -56,7 +60,26 @@ public class PatientController {
     @GetMapping("/results")
     public String results(Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/results");
+        controllerHelperService.addCommonAttributes(model, "/patient/results");
+        model.addAttribute("documents", documentService.getDocumentsForCurrentUser());
         return "patient/results";
+    }
+
+    @PostMapping("/filter-document")
+    public String filterDocument(@RequestParam DocumentType documentType, Model model) {
+        controllerHelperService.addCommonAttributes(model, "/patient/results");
+        if (documentType.equals(DocumentType.LABORATORY_RESULT) || documentType.equals(DocumentType.REDIOGRAPHY) || documentType.equals(DocumentType.OTHER)) {
+            model.addAttribute("documents", documentService.getDocumentsForCurrentUserByType(documentType));
+            return "patient/results";
+        } else {
+            model.addAttribute("documents", documentService.getDocumentsForCurrentUser());
+            return "patient/results";
+        }
+    }
+
+    @GetMapping("/download/{id}")
+    public void downloadDocument(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        documentService.downloadDocument(id, response);
     }
 
     @GetMapping("/history")
@@ -74,6 +97,9 @@ public class PatientController {
 
 
 
+
+    
+
     @PostMapping("/appointments/schedule")
     public String scheduleAppointment(@RequestParam MedicalSpecialty medicalSpecialty, Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/appointments");
@@ -81,6 +107,7 @@ public class PatientController {
         return "patient/schedule-appointment/select-appointment";
     }
 
+    // HACER QUE SOLO SE PUEDA ASIGNAR UNA CITA  DE CADA TIPO A LA VEZ
     @PostMapping("/appointments/schedule/confirm")
     public String confirmAppointment(@RequestParam Long appointmentId, Model model) {
         appointmentService.scheduleAppointment(appointmentId);

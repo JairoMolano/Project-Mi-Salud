@@ -5,12 +5,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import co.usco.demo.models.constants.AppointmentStatus;
+import co.usco.demo.models.constants.DocumentType;
 import co.usco.demo.models.constants.MedicalSpecialty;
 import co.usco.demo.models.constants.Permission;
 import co.usco.demo.models.AppointmentModel;
+import co.usco.demo.models.DocumentModel;
 import co.usco.demo.models.RoleModel;
 import co.usco.demo.models.UserModel;
 import co.usco.demo.repositories.AppointmentRepository;
+import co.usco.demo.repositories.DocumentRepository;
 import co.usco.demo.repositories.RoleRepository;
 import co.usco.demo.repositories.UserRepository;
 
@@ -30,6 +33,9 @@ public class DataInitializerService {
 
     @Autowired
     private AppointmentRepository appointmentsRepository;
+
+    @Autowired
+    private DocumentRepository documentRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -395,6 +401,37 @@ public class DataInitializerService {
             appointment11, appointment12, appointment13, appointment14, appointment15, appointment16, appointment17, appointment18, appointment19, appointment20,
             appointment21, appointment22, appointment23, appointment24, appointment25, appointment26, appointment27, appointment28, appointment29, appointment30
         ));
+
+
+        // Creation of documents
+        DocumentModel document1 = DocumentModel.builder()
+            .name("Document1")
+            .type(DocumentType.LABORATORY_RESULT)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732135829474-Expo.pdf")
+            .build();
+
+        DocumentModel document2 = DocumentModel.builder()
+            .name("Document2")
+            .type(DocumentType.REDIOGRAPHY)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732135840688-LA REPÚBLICA LIBERAL.pdf")
+            .build();
+
+        DocumentModel document3 = DocumentModel.builder()
+            .name("Document3")
+            .type(DocumentType.OTHER)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732135858842-PropiedadesMecanicas.pdf")
+            .build();
+
+        documentRepository.saveAll(List.of(document1, document2, document3));
 
         
 

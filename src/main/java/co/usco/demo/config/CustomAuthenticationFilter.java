@@ -16,10 +16,14 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
-        String documentType = request.getParameter("documentType");
-        if (documentType != null && !documentType.isEmpty()) {
-            SecurityContextHolder.getContext().setAuthentication(new PreAuthenticatedAuthenticationToken(documentType, null));
+        String path = request.getServletPath();
+        if ("/auth/login".equals(path)) {
+            String documentType = request.getParameter("documentType");
+            if (documentType != null && !documentType.isEmpty()) {
+                SecurityContextHolder.getContext().setAuthentication(
+                    new PreAuthenticatedAuthenticationToken(documentType, null)
+                );
+            }
         }
         filterChain.doFilter(request, response);
     }

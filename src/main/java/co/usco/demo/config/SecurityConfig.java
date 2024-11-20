@@ -52,7 +52,7 @@ public class SecurityConfig {
             .failureHandler(authenticationFailureHandler()))
             .logout(logout -> logout
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/login?logout")
+            .logoutSuccessUrl("/auth/login?logout")
             .invalidateHttpSession(true)
             .permitAll());
         return http.build();

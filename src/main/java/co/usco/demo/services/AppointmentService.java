@@ -37,13 +37,13 @@ public class AppointmentService {
         }
     }
 
-        public List<AppointmentModel> getAvailableAppointmentsByType(MedicalSpecialty medicalSpecialty) {
-            return appointmentRepository.findByDoctorMedicalSpecialtyAndStatus(medicalSpecialty, AppointmentStatus.AVAILABLE);
-        }
+    public List<AppointmentModel> getAvailableAppointmentsByType(MedicalSpecialty medicalSpecialty) {
+        return appointmentRepository.findByDoctorMedicalSpecialtyAndStatus(medicalSpecialty, AppointmentStatus.AVAILABLE);
+    }
 
-        public void scheduleAppointment(Long appointmentId) {
-        UserModel user = userService.getSessionUser();
-        AppointmentModel appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new IllegalArgumentException("Invalid appointment ID"));
+    public void scheduleAppointment(Long appointmentId) {
+    UserModel user = userService.getSessionUser();
+    AppointmentModel appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new IllegalArgumentException("Invalid appointment ID"));
         if (appointment.getStatus() == AppointmentStatus.AVAILABLE) {
             appointment.setPatient(user);
             appointment.setStatus(AppointmentStatus.SCHEDULED);

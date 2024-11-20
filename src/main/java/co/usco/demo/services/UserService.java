@@ -17,6 +17,10 @@ public class UserService {
         return userRepository.findByDocumentNumber(documentNumber);
     }
 
+    public UserModel getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public UserModel findByDocumentNumberAndDocumentType(String documentNumber, String documentType) {
         return userRepository.findByDocumentNumberAndDocumentType(documentNumber, documentType).orElse(null);
     }
