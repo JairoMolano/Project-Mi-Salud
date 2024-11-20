@@ -2,8 +2,8 @@ package co.usco.demo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationProvider;
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.security.core.Authentication;
@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import co.usco.demo.models.UserModel;
@@ -30,14 +31,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private MessageSource messageSource;
 
     private String getMessage(String key) {
-        return messageSource.getMessage(key, null, Locale.getDefault());
+        return messageSource.getMessage(key, null, LocaleContextHolder.getLocale());
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String documentNumber = authentication.getName();
         String password = authentication.getCredentials().toString();
-        String documentType = "cc"; // Pending to implement functionality to get the document type
+        String documentType = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel user = userService.findByDocumentNumberAndDocumentType(documentNumber, documentType);
 
         if (user == null) {

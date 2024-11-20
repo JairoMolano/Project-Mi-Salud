@@ -1,6 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <div class="container-fluid py-2"  th:fragment="navbar" id="navbar">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="home-navbar">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" th:href="@{/home/MiSalud}">
             <img src="/img/logo-1.png" alt="Bootstrap" width="90" height="60">
@@ -40,5 +41,6 @@
           </span>
         </div>
     </nav>
+    </div>
   </div>
 </html>

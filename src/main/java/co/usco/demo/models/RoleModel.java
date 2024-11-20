@@ -29,6 +29,7 @@ public class RoleModel {
     @Column(name = "role_name")
     private String roleName;
 
+    @Column(name = "permissions")
     private Set<Permission> permissions;
 
 }

@@ -1,10 +1,10 @@
 package co.usco.demo.config;
 
-import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,10 +24,14 @@ public class SecurityConfig {
     @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    private CustomAuthenticationFilter customAuthenticationFilter;
+
     @Bean
     @SuppressWarnings("deprecation")
        public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
         http
+        .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // fix: filter intervenes with the register
         .authenticationProvider(customAuthenticationProvider())
         .authorizeRequests(auth -> auth 
             .requestMatchers("/change-language").permitAll()
@@ -46,9 +51,10 @@ public class SecurityConfig {
             .successHandler(authenticationSuccessHandler())
             .failureHandler(authenticationFailureHandler()))
             .logout(logout -> logout
-            .permitAll()
-            .logoutUrl("/auth/logout")
-            .logoutSuccessUrl("/auth/login"));
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login?logout")
+            .invalidateHttpSession(true)
+            .permitAll());
         return http.build();
     }
 
@@ -94,7 +100,7 @@ public class SecurityConfig {
             if (exception instanceof BadCredentialsException || exception instanceof DisabledException) {
                 errorMessage = exception.getMessage();
             } else {
-                errorMessage = messageSource.getMessage("auth.somethingWentWrong", null, Locale.getDefault());
+                errorMessage = messageSource.getMessage("auth.somethingWentWrong", null, LocaleContextHolder.getLocale());
             }
             request.getSession().setAttribute("error", errorMessage);
             response.sendRedirect("/auth/login");

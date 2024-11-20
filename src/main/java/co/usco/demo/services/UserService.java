@@ -1,6 +1,7 @@
 package co.usco.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import co.usco.demo.models.UserModel;
 import co.usco.demo.repositories.UserRepository;
@@ -27,5 +28,12 @@ public class UserService {
     public void save(UserModel user) {
         userRepository.save(user);
     }
+
+    public UserModel getSessionUser() {
+        String documentNumber = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByDocumentNumber(documentNumber);
+    }
+
+    
     
 }

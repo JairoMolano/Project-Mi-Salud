@@ -1,22 +1,24 @@
 /* Component styles */
 
-.navbar{
-    font-size: large;
-    .btn-primary{
+.home-navbar{
+    .navbar{
         font-size: large;
-        background-color: #5eb08b;
-        border: solid 2px #5eb08b;
-    }
-    .btn-primary:active{
-        background-color: #4a8a6e;
-        border-color: #4a8a6e;
-    }
-    .btn-primary:hover{
-        background-color: #8dbfa8;
-        border: solid 2px #8dbfa8;
-    }
-    .btn-secondary{
-        font-size: large;
+        .btn-primary{
+            font-size: large;
+            background-color: #5eb08b;
+            border: solid 2px #5eb08b;
+        }
+        .btn-primary:active{
+            background-color: #4a8a6e;
+            border-color: #4a8a6e;
+        }
+        .btn-primary:hover{
+            background-color: #8dbfa8;
+            border: solid 2px #8dbfa8;
+        }
+        .btn-secondary{
+            font-size: large;
+        }
     }
 }
 
@@ -36,4 +38,42 @@
         color: white;
         line-height: 2;
     }
+}
+
+.top-nav{
+    background-color: #5eb08b;
+    font-size: large;
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    .nav-item:active{
+        color: white;
+    }
+    .nav-item:hover{
+        color: white;
+    }
+    .dropdown-item:hover{
+        color: black;
+        background-color: #cbcaca;
+    }
+}
+
+.patient-navbar{
+    .navbar{
+        background-color: #cbcaca;
+        .nav-link{
+            text-decoration: none;
+            color: black;
+            font-size: large;
+        }
+        .nav-link.active{
+            color: #5eb08b;
+            font-weight: bold;
+        }
+        .nav-link:hover{
+            color: #5eb08b;
+        }
+    }
+
 }

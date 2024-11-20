@@ -2,6 +2,7 @@ package co.usco.demo.models;
 
 import java.util.HashSet;
 import java.util.Set;
+import co.usco.demo.models.constants.MedicalSpecialty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,6 +70,9 @@ public class UserModel {
 
     @Column(name = "verification_code")
     private String verificationCode;
+
+    @Column(name = "medical_specialty")
+    private MedicalSpecialty medicalSpecialty;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

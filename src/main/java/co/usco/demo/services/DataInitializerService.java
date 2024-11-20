@@ -4,11 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import co.usco.demo.models.constants.AppointmentStatus;
+import co.usco.demo.models.constants.MedicalSpecialty;
 import co.usco.demo.models.constants.Permission;
+import co.usco.demo.models.AppointmentModel;
 import co.usco.demo.models.RoleModel;
 import co.usco.demo.models.UserModel;
+import co.usco.demo.repositories.AppointmentRepository;
 import co.usco.demo.repositories.RoleRepository;
 import co.usco.demo.repositories.UserRepository;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
@@ -18,9 +25,11 @@ public class DataInitializerService {
     @Autowired
     private RoleRepository roleRepository;
 
-
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentsRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -65,7 +74,7 @@ public class DataInitializerService {
             .city("Neiva")
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
-            .roles(Set.of(roleAdmin))
+            .roles(Set.of(rolePatient))
             .build();
 
         UserModel user2 = UserModel.builder()
@@ -82,6 +91,7 @@ public class DataInitializerService {
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
             .roles(Set.of(roleMedicalStaff))
+            .medicalSpecialty(MedicalSpecialty.GENERAL)
             .build();
 
         UserModel user3 = UserModel.builder()
@@ -98,6 +108,7 @@ public class DataInitializerService {
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
             .roles(Set.of(roleMedicalStaff))
+            .medicalSpecialty(MedicalSpecialty.DENTISTRY)
             .build();
 
         UserModel user4 = UserModel.builder()
@@ -164,6 +175,228 @@ public class DataInitializerService {
             .build();
 
         userRepository.saveAll(List.of(user1, user2, user3, user4, user5, user6, user7));
+
+        // Creation of appointments
+        AppointmentModel appointment1 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 9, 30))
+            .time(LocalTime.of(9, 0))
+            .status(AppointmentStatus.SCHEDULED)
+            .patient(user1)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment2 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 1))
+            .time(LocalTime.of(10, 0))
+            .status(AppointmentStatus.SCHEDULED)
+            .patient(user1)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment3 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 2))
+            .time(LocalTime.of(11, 0))
+            .status(AppointmentStatus.FINISHED)
+            .patient(user1)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment4 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 3))
+            .time(LocalTime.of(12, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment5 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 4))
+            .time(LocalTime.of(13, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment6 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 5))
+            .time(LocalTime.of(14, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment7 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 6))
+            .time(LocalTime.of(15, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment8 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 7))
+            .time(LocalTime.of(16, 0))
+            .status(AppointmentStatus.SCHEDULED)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment9 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 8))
+            .time(LocalTime.of(17, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment10 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 9))
+            .time(LocalTime.of(18, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment11 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 10))
+            .time(LocalTime.of(9, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment12 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 11))
+            .time(LocalTime.of(10, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment13 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 12))
+            .time(LocalTime.of(11, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment14 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 13))
+            .time(LocalTime.of(12, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment15 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 14))
+            .time(LocalTime.of(13, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment16 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 15))
+            .time(LocalTime.of(14, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment17 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 16))
+            .time(LocalTime.of(15, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment18 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 17))
+            .time(LocalTime.of(16, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment19 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 18))
+            .time(LocalTime.of(17, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment20 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 19))
+            .time(LocalTime.of(18, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment21 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 20))
+            .time(LocalTime.of(9, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment22 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 21))
+            .time(LocalTime.of(10, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment23 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 22))
+            .time(LocalTime.of(11, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment24 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 23))
+            .time(LocalTime.of(12, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment25 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 24))
+            .time(LocalTime.of(13, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment26 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 25))
+            .time(LocalTime.of(14, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment27 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 26))
+            .time(LocalTime.of(15, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment28 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 27))
+            .time(LocalTime.of(16, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        AppointmentModel appointment29 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 28))
+            .time(LocalTime.of(17, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user2)
+            .build();
+
+        AppointmentModel appointment30 = AppointmentModel.builder()
+            .date(LocalDate.of(2023, 10, 29))
+            .time(LocalTime.of(18, 0))
+            .status(AppointmentStatus.AVAILABLE)
+            .doctor(user3)
+            .build();
+
+        appointmentsRepository.saveAll(List.of(
+            appointment1, appointment2, appointment3, appointment4, appointment5, appointment6, appointment7, appointment8, appointment9, appointment10,
+            appointment11, appointment12, appointment13, appointment14, appointment15, appointment16, appointment17, appointment18, appointment19, appointment20,
+            appointment21, appointment22, appointment23, appointment24, appointment25, appointment26, appointment27, appointment28, appointment29, appointment30
+        ));
+
+        
 
     }
 }
