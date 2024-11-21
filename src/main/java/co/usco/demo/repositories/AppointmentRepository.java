@@ -16,4 +16,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentModel, L
     List<AppointmentModel> findByDoctorMedicalSpecialty(MedicalSpecialty medicalSpecialty);
 
     List<AppointmentModel> findByDoctorMedicalSpecialtyAndStatus(MedicalSpecialty medicalSpecialty, AppointmentStatus status);
+
+    boolean existsByPatientAndDoctorMedicalSpecialtyAndStatus(UserModel patient, MedicalSpecialty medicalSpecialty, AppointmentStatus status);
+    
 }

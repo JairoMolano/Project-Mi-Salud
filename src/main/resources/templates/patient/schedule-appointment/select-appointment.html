@@ -22,7 +22,7 @@
   <!--patient-navbar from shared_components-->  
   <div th:replace="~{components/patient-navbar :: patient-navbar}"></div>
 
-  <form th:action="@{/patient/appointments/schedule/confirm}" method="post">
+  <form th:action="@{/patient/appointments/confirm-schedule}" method="post">
     <div class="mb-3">
         <label for="appointment" class="form-label">Citas Disponibles</label>
         <select class="form-select" id="appointment" name="appointmentId" style="max-height: 200px; overflow-y: auto;">

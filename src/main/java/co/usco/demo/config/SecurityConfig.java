@@ -31,7 +31,7 @@ public class SecurityConfig {
     @SuppressWarnings("deprecation")
        public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
         http
-        .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // fix: filter intervenes with the register
+        .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authenticationProvider(customAuthenticationProvider())
         .authorizeRequests(auth -> auth 
             .requestMatchers("/change-language").permitAll()

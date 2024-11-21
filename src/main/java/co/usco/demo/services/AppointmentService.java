@@ -3,6 +3,7 @@ package co.usco.demo.services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import co.usco.demo.models.AppointmentModel;
 import co.usco.demo.models.UserModel;
 import co.usco.demo.models.constants.AppointmentStatus;
@@ -24,6 +25,12 @@ public class AppointmentService {
 
     public List<AppointmentModel> getFinisheddAppointmentsByPatient(UserModel patient) {
         return appointmentRepository.findByStatusAndPatient(AppointmentStatus.FINISHED, patient);
+    }
+
+    public void addUserAppointments(Model model) {
+        UserModel user = userService.getSessionUser();
+        model.addAttribute("scheduledAppointments", getScheduledAppointmentsByPatient(user));
+        model.addAttribute("finishedAppointments", getFinisheddAppointmentsByPatient(user));
     }
 
     public void cancelAppointment(Long appointmentId) {
@@ -50,6 +57,24 @@ public class AppointmentService {
             appointmentRepository.save(appointment);
         } else {
             throw new IllegalStateException("Only available appointments can be scheduled");
+        }
+    }
+
+    public boolean userHasAppointmentOfType(MedicalSpecialty medicalSpecialty) {
+        UserModel user = userService.getSessionUser(); 
+        return appointmentRepository.existsByPatientAndDoctorMedicalSpecialtyAndStatus(
+                user, medicalSpecialty, AppointmentStatus.SCHEDULED
+        );
+    }
+
+    public String checkScheduledAppointments(MedicalSpecialty medicalSpecialty, Model model) {
+        boolean hasAppointment = userHasAppointmentOfType(medicalSpecialty);
+        if (hasAppointment) {
+            model.addAttribute("errorMessage", "Ya tienes una cita de este tipo agendada.");
+            return "schedule-appointment/select-type";
+        } else {
+            model.addAttribute("appointments", getAvailableAppointmentsByType(medicalSpecialty));
+            return "schedule-appointment/select-appointment";
         }
     }
     

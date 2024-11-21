@@ -405,33 +405,96 @@ public class DataInitializerService {
 
         // Creation of documents
         DocumentModel document1 = DocumentModel.builder()
-            .name("Document1")
-            .type(DocumentType.LABORATORY_RESULT)
-            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
-            .patient(user1)
-            .uploadBy(user2)
-            .path("documents/1732135829474-Expo.pdf")
-            .build();
-
-        DocumentModel document2 = DocumentModel.builder()
-            .name("Document2")
-            .type(DocumentType.REDIOGRAPHY)
-            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
-            .patient(user1)
-            .uploadBy(user2)
-            .path("documents/1732135840688-LA REPÚBLICA LIBERAL.pdf")
-            .build();
-
-        DocumentModel document3 = DocumentModel.builder()
-            .name("Document3")
+            .name("RESULTADO DE ESPECIALISTA")
             .type(DocumentType.OTHER)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user2)
-            .path("documents/1732135858842-PropiedadesMecanicas.pdf")
+            .path("documents/1732168088035-RESULTADO DE ESPECIALISTA.pdf")
             .build();
 
-        documentRepository.saveAll(List.of(document1, document2, document3));
+        DocumentModel document2 = DocumentModel.builder()
+            .name("RESULTADO DE LABORATORIO")
+            .type(DocumentType.LABORATORY_RESULT)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732168096134-RESULTADO DE LABORATORIO.pdf")
+            .build();
+
+        DocumentModel document3 = DocumentModel.builder()
+            .name("RADIOGRAFIA")
+            .type(DocumentType.RADIOGRAPHY)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732168105946-RADIOGRAFIA.pdf")
+            .build();
+
+        DocumentModel document4 = DocumentModel.builder()
+            .name("RESULTADO DE ESPECIALISTA")
+            .type(DocumentType.OTHER)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user3)
+            .path("documents/1732168088035-RESULTADO DE ESPECIALISTA.pdf")
+            .build();
+
+        DocumentModel document5 = DocumentModel.builder()
+            .name("RESULTADO DE LABORATORIO")
+            .type(DocumentType.LABORATORY_RESULT)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user3)
+            .path("documents/1732168096134-RESULTADO DE LABORATORIO.pdf")
+            .build();
+
+        DocumentModel document6 = DocumentModel.builder()
+            .name("RADIOGRAFIA")
+            .type(DocumentType.RADIOGRAPHY)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user3)
+            .path("documents/1732168105946-RADIOGRAFIA.pdf")
+            .build();
+
+        DocumentModel document7 = DocumentModel.builder()
+            .name("RESULTADO DE ESPECIALISTA")
+            .type(DocumentType.OTHER)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732168088035-RESULTADO DE ESPECIALISTA.pdf")
+            .build();
+
+        DocumentModel document8 = DocumentModel.builder()
+            .name("RESULTADO DE LABORATORIO")
+            .type(DocumentType.LABORATORY_RESULT)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732168096134-RESULTADO DE LABORATORIO.pdf")
+            .build();
+
+        DocumentModel document9 = DocumentModel.builder()
+            .name("RADIOGRAFIA")
+            .type(DocumentType.RADIOGRAPHY)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user2)
+            .path("documents/1732168105946-RADIOGRAFIA.pdf")
+            .build();
+
+        DocumentModel document10 = DocumentModel.builder()
+            .name("RESULTADO DE ESPECIALISTA")
+            .type(DocumentType.OTHER)
+            .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
+            .patient(user1)
+            .uploadBy(user3)
+            .path("documents/1732168088035-RESULTADO DE ESPECIALISTA.pdf")
+            .build();
+
+        documentRepository.saveAll(List.of(document1, document2, document3, document4, document5, document6, document7, document8, document9, document10));
 
         
 

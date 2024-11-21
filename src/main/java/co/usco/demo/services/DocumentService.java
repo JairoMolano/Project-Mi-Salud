@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 import co.usco.demo.models.DocumentModel;
 import co.usco.demo.models.UserModel;
@@ -17,7 +16,10 @@ import co.usco.demo.repositories.DocumentRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -53,9 +55,9 @@ public class DocumentService {
     }
 
     // Listar documentos de un usuario
-    public List<DocumentModel> getDocumentsForCurrentUser() {
+    public Page<DocumentModel> getDocumentsForCurrentUser(int page, int size) {
         UserModel user = userService.getSessionUser();
-        return documentRepository.findByPatient(user); // Asumiendo que quieres ver los documentos subidos por el usuario
+        return documentRepository.findByPatient(user, PageRequest.of(page, size));
     }
 
     // Obtener documento por ID
@@ -83,10 +85,37 @@ public class DocumentService {
     }
 
     // Listar documentos de un usuario por tipo
-    public List<DocumentModel> getDocumentsForCurrentUserByType(DocumentType documentType) {
+    public Page<DocumentModel> getDocumentsForCurrentUserByType(String documentType, int page, int size) {
         UserModel user = userService.getSessionUser();
-        return documentRepository.findByPatientAndType(user, documentType);
+        DocumentType type = DocumentType.valueOf(documentType);
+        return documentRepository.findByPatientAndType(user, type, PageRequest.of(page, size));
     }
+
+    // Agregar atributos de documentos para el usuario actual
+    public void addDocumentAttributesForCurrentUser(Model model, int page, int pageSize) {
+        Page<DocumentModel> documentPage = getDocumentsForCurrentUser(page, pageSize);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", documentPage.getTotalPages());
+        model.addAttribute("documents", documentPage.getContent());
+    }
+
+    // Agregar atributos de documentos para los resultados filtrados
+    public void addDocumentAttributesForFilteredResults(Model model, String documentType, int page, int pageSize) {
+        Page<DocumentModel> documentPage;
+
+        if (documentType == null || documentType.isEmpty()) {
+            documentPage = getDocumentsForCurrentUser(page, pageSize);
+        } else {
+            documentPage = getDocumentsForCurrentUserByType(documentType, page, pageSize);
+            model.addAttribute("documentType", documentType);
+        }
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", documentPage.getTotalPages());
+        model.addAttribute("documents", documentPage.getContent());
+    }
+
+
 }
 
 

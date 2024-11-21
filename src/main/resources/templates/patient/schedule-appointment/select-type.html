@@ -35,6 +35,9 @@
           <option value="SPECIALIST">Consulta con Especialista</option>
         </select>
       </div>
+      <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+      </div>
       <a href="/patient/appointments" class="btn btn-secondary">Atrás</a>
       <button type="submit" class="btn btn-primary">Continuar</button>
     </form>
