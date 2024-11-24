@@ -1,5 +1,6 @@
 package co.usco.demo.models;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
@@ -63,6 +64,12 @@ public class UserModel {
     
     @Column(name = "password")
     private String password;
+
+    @Column(name = "horary_start")
+    private LocalTime horaryStart;
+
+    @Column(name = "horary_end")
+    private LocalTime horaryEnd;
     
     @Column(name = "user_active_status")
     private boolean userActive;

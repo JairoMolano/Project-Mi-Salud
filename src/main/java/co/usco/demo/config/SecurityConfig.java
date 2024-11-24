@@ -38,6 +38,7 @@ public class SecurityConfig {
             .requestMatchers("/home/**").permitAll()
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/static/**", "/img/**", "/styles/**").permitAll()
+            .requestMatchers("/common/change-language").permitAll()
             .requestMatchers("/patient/**").hasAnyAuthority("ROLE_PATIENT")
             .requestMatchers("/support-staff/**").hasAnyAuthority("ROLE_SUPPORT_STAFF")
             .requestMatchers("/medical-staff/**").hasAnyAuthority("ROLE_MEDICAL_STAFF")

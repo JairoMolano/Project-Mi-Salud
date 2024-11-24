@@ -44,9 +44,9 @@ public class Constants {
     }
 
     public enum AppointmentPlace {
-        HOSPITAL,
-        CLINIC,
-        HOME;
+        CLINIC_CENTER,
+        DENTAL_CENTER,
+        DIAGNOSTIC_CENTER;
     }
 
 }

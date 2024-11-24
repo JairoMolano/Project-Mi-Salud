@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="" lang="es">
+<html lang="es">
 <head>
 
   <meta charset="UTF-8">
@@ -61,7 +61,7 @@
                   <h5 class="card-title mt-3" th:text="${document.name}"></h5>
                   <p class="card-text" th:text="${#dates.format(document.uploadDate, 'dd/MM/yyyy HH:mm a')}"></p>
                   <strong th:text="#{uploadBy}" aria-label="#{uploadBy}"></strong> <span th:text="${document.uploadBy.firstName + ' ' + document.uploadBy.lastName}"></span><br><br>
-                  <a th:href="@{'/patient' + '/download/' + ${document.id}}" class="btn btn-primary btn-sm" target="_blank" th:text="#{watch}" aria-label="#{watch}"></a>
+                  <a th:href="@{'/common' + '/download/' + ${document.id}}" class="btn btn-primary btn-sm" target="_blank" th:text="#{watch}" aria-label="#{watch}"></a>
               </div>
           </div>
       </div>

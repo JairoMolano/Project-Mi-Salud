@@ -19,9 +19,35 @@
 <body>
 
   <!--medical-navbar from shared_components-->  
+  <div th:replace="~{components/portal-bar :: portal-bar}"></div>
   <div th:replace="~{components/medical-navbar :: medical-navbar}"></div>
 
   <h1>Vista Medical Staff: pacientes</h1>
+
+  <div class="container mt-4">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Documento</th>
+          <th>Género</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="patient : ${patients}">
+          <td th:text="${patient.firstName} + ' ' + ${patient.lastName}"></td>
+          <td th:text="${patient.documentNumber}"></td>
+          <td th:text="${patient.gender}"></td>
+          <td>
+            <a href="#" class="btn btn-primary btn-sm">Ver</a>
+            <a href="#" class="btn btn-warning btn-sm">Editar</a>
+            <a href="#" class="btn btn-danger btn-sm">Eliminar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 
   <!--Bootstrap 5.3.3 JS-->

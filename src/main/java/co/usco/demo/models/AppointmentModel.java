@@ -45,11 +45,11 @@ public class AppointmentModel {
     @JoinColumn(name = "order_id")
     private OrderModel order;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "patient_id", referencedColumnName = "user_id")
     private UserModel patient;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "doctor_id", referencedColumnName = "user_id")
     private UserModel doctor;
 }

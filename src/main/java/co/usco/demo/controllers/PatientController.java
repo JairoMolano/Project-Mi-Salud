@@ -1,11 +1,9 @@
 package co.usco.demo.controllers;
 
-import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,8 +12,6 @@ import co.usco.demo.services.AppointmentService;
 import co.usco.demo.services.ControllerHelperService;
 import co.usco.demo.services.DocumentService;
 import co.usco.demo.services.OrderService;
-import co.usco.demo.services.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -33,9 +29,6 @@ public class PatientController {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -113,11 +106,6 @@ public class PatientController {
         return "patient/results";
     }
 
-    @GetMapping("/download/{id}")
-    public void downloadDocument(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        documentService.downloadDocument(id, response);
-    }
-
     @GetMapping("/history")
     public String history(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String documentType) {
         controllerHelperService.addCommonAttributes(model, "/patient/history");
@@ -138,13 +126,5 @@ public class PatientController {
         orderService.markOrderAsInDelivery(orderId);
         return "redirect:/patient/medicines";
     }
-
-    @GetMapping("/user-profile")
-    public String profile(Model model) {
-        controllerHelperService.addCommonAttributes(model, "/patient/profile");
-        return "user-profile";
-    }
-
-    
     
 }

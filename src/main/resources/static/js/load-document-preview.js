@@ -1,6 +1,6 @@
 document.querySelectorAll('[id^="pdf-container-"]').forEach(container => {
     const documentId = container.id.split('-')[2];
-    const url = `/patient/download/${documentId}`;
+    const url = `/common/download/${documentId}`;
     pdfjsLib.getDocument(url).promise.then(pdf => {
         pdf.getPage(1).then(page => {
             const viewport = page.getViewport({ scale: 1 });

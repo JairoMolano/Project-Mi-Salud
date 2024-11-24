@@ -2,16 +2,15 @@ package co.usco.demo.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-
 import java.util.List;
 import co.usco.demo.models.Constants.OrderType;
+import co.usco.demo.models.AppointmentModel;
 import co.usco.demo.models.Constants;
 import co.usco.demo.models.OrderModel;
 import co.usco.demo.models.UserModel;
 import co.usco.demo.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 
 @Service
@@ -22,6 +21,10 @@ public class OrderService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    @Lazy
+    private AppointmentService appointmentService;
 
     public void addUserOrders(Model model) {
         UserModel user = userService.getSessionUser();
@@ -70,6 +73,30 @@ public class OrderService {
         model.addAttribute("completedOrders", getOrdersByTypeAndPatientAndCompleted(orderType, user));
     }
     
+
+
+    public void createOrder(Long appointmentId, Constants.OrderType orderType, String description) {
+        AppointmentModel appointment = appointmentService.getAppointmentById(appointmentId);
+
+        OrderModel order = new OrderModel();
+        order.setPatient(appointment.getPatient());
+        order.setDoctor(appointment.getDoctor());
+        order.setOrderType(orderType);
+        order.setDescription(description);
+        order.setStatus(Constants.OrderStatus.REQUESTING);
+        order.setCreatedAt(java.time.LocalDateTime.now());
+
+        orderRepository.save(order);
+    }
+
+
+
+
+
+
+
+
+
 
     // Auxiliary services
 

@@ -1,4 +1,5 @@
 package co.usco.demo.services;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -89,6 +90,30 @@ public class AppointmentService {
         cancelAppointment(appointmentId);
     }
 
+    public List<AppointmentModel> getScheduledAppointmentsByDoctorAndDate() {
+        UserModel doctor = userService.getSessionUser();
+        LocalDate today = LocalDate.now();
+        return appointmentRepository.findByStatusAndDoctorAndDate(Constants.AppointmentStatus.SCHEDULED, doctor, today, 
+                Sort.by(Sort.Direction.ASC, "date"));
+    }
+    
+    public List<AppointmentModel> getAppointmentsByStatus(Constants.AppointmentStatus status) {
+        UserModel doctor = userService.getSessionUser();
+        return appointmentRepository.findByStatusAndDoctor(status, doctor, Sort.by(Sort.Direction.ASC, "date"));
+    }
+
+    public List<AppointmentModel> getAllScheduledAppointmentsByDoctor() {
+        UserModel doctor = userService.getSessionUser();
+        return appointmentRepository.findByStatusAndDoctor(Constants.AppointmentStatus.SCHEDULED, doctor, 
+                Sort.by(Sort.Direction.ASC, "date"));
+    }
+
+    public List<UserModel> getPatientsByDoctor() {
+        UserModel doctor = userService.getSessionUser();
+        return appointmentRepository.findDistinctPatientsByDoctor(doctor);
+    }
+    
+
     // Auxiliary services
 
     public List<AppointmentModel> getScheduledAppointmentsByPatient(UserModel patient) {
@@ -100,7 +125,6 @@ public class AppointmentService {
         return appointmentRepository.findByStatusAndPatient(Constants.AppointmentStatus.FINISHED, patient, 
                 Sort.by(Sort.Direction.ASC, "date"));
     }
-    
 
     public AppointmentModel getAppointmentById(Long id) {
         return appointmentRepository.findById(id).orElse(null);
@@ -158,5 +182,7 @@ public class AppointmentService {
         appointment.setStatus(Constants.AppointmentStatus.AVAILABLE);
         appointmentRepository.save(appointment);
     }
+
+    
 
 }
