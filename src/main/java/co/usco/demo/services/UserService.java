@@ -38,6 +38,4 @@ public class UserService {
         return userRepository.findByDocumentNumber(documentNumber);
     }
 
-    
-    
 }

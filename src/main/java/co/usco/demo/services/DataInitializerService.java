@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import co.usco.demo.models.constants.AppointmentStatus;
-import co.usco.demo.models.constants.DocumentType;
-import co.usco.demo.models.constants.MedicalSpecialty;
-import co.usco.demo.models.constants.Permission;
 import co.usco.demo.models.AppointmentModel;
 import co.usco.demo.models.DocumentModel;
 import co.usco.demo.models.RoleModel;
@@ -16,11 +12,14 @@ import co.usco.demo.repositories.AppointmentRepository;
 import co.usco.demo.repositories.DocumentRepository;
 import co.usco.demo.repositories.RoleRepository;
 import co.usco.demo.repositories.UserRepository;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
+import co.usco.demo.models.OrderModel;
+import co.usco.demo.repositories.OrderRepository;
+import co.usco.demo.models.Constants;
 
 @Service
 public class DataInitializerService {
@@ -40,28 +39,32 @@ public class DataInitializerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+
     @Transactional
     public void initializeData() {
 
         // Creation of roles
         RoleModel rolePatient = RoleModel.builder()
             .roleName("ROLE_PATIENT")
-            .permissions(Set.of(Permission.READ, Permission.UPDATE, Permission.CREATE))
+            .permissions(Set.of(Constants.Permission.READ, Constants.Permission.UPDATE, Constants.Permission.CREATE))
             .build();
 
         RoleModel roleSupportStaff = RoleModel.builder()
             .roleName("ROLE_SUPPORT_STAFF")
-            .permissions(Set.of(Permission.READ, Permission.UPDATE, Permission.CREATE, Permission.DELETE))
+            .permissions(Set.of(Constants.Permission.READ, Constants.Permission.UPDATE, Constants.Permission.CREATE, Constants.Permission.DELETE))
             .build();
 
         RoleModel roleMedicalStaff = RoleModel.builder()
             .roleName("ROLE_MEDICAL_STAFF")
-            .permissions(Set.of(Permission.READ, Permission.UPDATE, Permission.CREATE, Permission.DELETE))
+            .permissions(Set.of(Constants.Permission.READ, Constants.Permission.UPDATE, Constants.Permission.CREATE, Constants.Permission.DELETE))
             .build();
 
         RoleModel roleAdmin = RoleModel.builder()
             .roleName("ROLE_ADMIN")
-            .permissions(Set.of(Permission.READ, Permission.UPDATE, Permission.CREATE, Permission.DELETE))
+            .permissions(Set.of(Constants.Permission.READ, Constants.Permission.UPDATE, Constants.Permission.CREATE, Constants.Permission.DELETE))
             .build();
 
         roleRepository.saveAll(List.of(rolePatient, roleSupportStaff, roleMedicalStaff, roleAdmin));
@@ -97,7 +100,7 @@ public class DataInitializerService {
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
             .roles(Set.of(roleMedicalStaff))
-            .medicalSpecialty(MedicalSpecialty.GENERAL)
+            .medicalSpecialty(Constants.MedicalSpecialty.GENERAL)
             .build();
 
         UserModel user3 = UserModel.builder()
@@ -114,7 +117,7 @@ public class DataInitializerService {
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
             .roles(Set.of(roleMedicalStaff))
-            .medicalSpecialty(MedicalSpecialty.DENTISTRY)
+            .medicalSpecialty(Constants.MedicalSpecialty.DENTISTRY)
             .build();
 
         UserModel user4 = UserModel.builder()
@@ -180,13 +183,47 @@ public class DataInitializerService {
             .roles(Set.of(rolePatient))
             .build();
 
-        userRepository.saveAll(List.of(user1, user2, user3, user4, user5, user6, user7));
+        UserModel user8 = UserModel.builder()
+            .firstName("Pedro")
+            .lastName("Gonzalez")
+            .documentType("cc")
+            .documentNumber("7890123456")
+            .gender("Male")
+            .phoneNumber("3607890123")
+            .email("pedro.gonzalez@example.com")
+            .address("Calle 80 # 90-100")
+            .department("Boyaca")
+            .city("Tunja")
+            .password(passwordEncoder.encode("1234"))
+            .userActive(true)
+            .roles(Set.of(roleMedicalStaff))
+            .medicalSpecialty(Constants.MedicalSpecialty.LABORATORY)
+            .build();
+
+        UserModel user9 = UserModel.builder()
+            .firstName("Lucia")
+            .lastName("Martinez")
+            .documentType("cc")
+            .documentNumber("8901234567")
+            .gender("Female")
+            .phoneNumber("3708901234")
+            .email("lucia.martinez@example.com")
+            .address("Carrera 50 # 60-70")
+            .department("Caldas")
+            .city("Manizales")
+            .password(passwordEncoder.encode("1234"))
+            .userActive(true)
+            .roles(Set.of(roleMedicalStaff))
+            .medicalSpecialty(Constants.MedicalSpecialty.SPECIALIST)
+            .build();
+
+        userRepository.saveAll(List.of(user1, user2, user3, user4, user5, user6, user7, user8, user9));
 
         // Creation of appointments
         AppointmentModel appointment1 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 9, 30))
             .time(LocalTime.of(9, 0))
-            .status(AppointmentStatus.SCHEDULED)
+            .status(Constants.AppointmentStatus.SCHEDULED)
             .patient(user1)
             .doctor(user2)
             .build();
@@ -194,7 +231,7 @@ public class DataInitializerService {
         AppointmentModel appointment2 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 1))
             .time(LocalTime.of(10, 0))
-            .status(AppointmentStatus.SCHEDULED)
+            .status(Constants.AppointmentStatus.SCHEDULED)
             .patient(user1)
             .doctor(user2)
             .build();
@@ -202,7 +239,7 @@ public class DataInitializerService {
         AppointmentModel appointment3 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 2))
             .time(LocalTime.of(11, 0))
-            .status(AppointmentStatus.FINISHED)
+            .status(Constants.AppointmentStatus.FINISHED)
             .patient(user1)
             .doctor(user3)
             .build();
@@ -210,189 +247,189 @@ public class DataInitializerService {
         AppointmentModel appointment4 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 3))
             .time(LocalTime.of(12, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment5 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 4))
             .time(LocalTime.of(13, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment6 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 5))
             .time(LocalTime.of(14, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment7 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 6))
             .time(LocalTime.of(15, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment8 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 7))
             .time(LocalTime.of(16, 0))
-            .status(AppointmentStatus.SCHEDULED)
+            .status(Constants.AppointmentStatus.SCHEDULED)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment9 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 8))
             .time(LocalTime.of(17, 0))
-            .status(AppointmentStatus.AVAILABLE)
-            .doctor(user2)
+            .status(Constants.AppointmentStatus.AVAILABLE)
+            .doctor(user8)
             .build();
 
         AppointmentModel appointment10 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 9))
             .time(LocalTime.of(18, 0))
-            .status(AppointmentStatus.AVAILABLE)
-            .doctor(user2)
+            .status(Constants.AppointmentStatus.AVAILABLE)
+            .doctor(user8)
             .build();
 
         AppointmentModel appointment11 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 10))
             .time(LocalTime.of(9, 0))
-            .status(AppointmentStatus.AVAILABLE)
-            .doctor(user2)
+            .status(Constants.AppointmentStatus.AVAILABLE)
+            .doctor(user9)
             .build();
 
         AppointmentModel appointment12 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 11))
             .time(LocalTime.of(10, 0))
-            .status(AppointmentStatus.AVAILABLE)
-            .doctor(user3)
+            .status(Constants.AppointmentStatus.AVAILABLE)
+            .doctor(user9)
             .build();
 
         AppointmentModel appointment13 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 12))
             .time(LocalTime.of(11, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment14 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 13))
             .time(LocalTime.of(12, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment15 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 14))
             .time(LocalTime.of(13, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment16 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 15))
             .time(LocalTime.of(14, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment17 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 16))
             .time(LocalTime.of(15, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment18 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 17))
             .time(LocalTime.of(16, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment19 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 18))
             .time(LocalTime.of(17, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment20 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 19))
             .time(LocalTime.of(18, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment21 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 20))
             .time(LocalTime.of(9, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment22 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 21))
             .time(LocalTime.of(10, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment23 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 22))
             .time(LocalTime.of(11, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment24 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 23))
             .time(LocalTime.of(12, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment25 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 24))
             .time(LocalTime.of(13, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment26 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 25))
             .time(LocalTime.of(14, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment27 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 26))
             .time(LocalTime.of(15, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment28 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 27))
             .time(LocalTime.of(16, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
         AppointmentModel appointment29 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 28))
             .time(LocalTime.of(17, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user2)
             .build();
 
         AppointmentModel appointment30 = AppointmentModel.builder()
             .date(LocalDate.of(2023, 10, 29))
             .time(LocalTime.of(18, 0))
-            .status(AppointmentStatus.AVAILABLE)
+            .status(Constants.AppointmentStatus.AVAILABLE)
             .doctor(user3)
             .build();
 
@@ -406,7 +443,7 @@ public class DataInitializerService {
         // Creation of documents
         DocumentModel document1 = DocumentModel.builder()
             .name("RESULTADO DE ESPECIALISTA")
-            .type(DocumentType.OTHER)
+            .type(Constants.DocumentType.OTHER)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user2)
@@ -415,7 +452,7 @@ public class DataInitializerService {
 
         DocumentModel document2 = DocumentModel.builder()
             .name("RESULTADO DE LABORATORIO")
-            .type(DocumentType.LABORATORY_RESULT)
+            .type(Constants.DocumentType.LABORATORY_RESULT)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user2)
@@ -424,7 +461,7 @@ public class DataInitializerService {
 
         DocumentModel document3 = DocumentModel.builder()
             .name("RADIOGRAFIA")
-            .type(DocumentType.RADIOGRAPHY)
+            .type(Constants.DocumentType.DIAGNOSTIC_IMAGE)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user2)
@@ -433,7 +470,7 @@ public class DataInitializerService {
 
         DocumentModel document4 = DocumentModel.builder()
             .name("RESULTADO DE ESPECIALISTA")
-            .type(DocumentType.OTHER)
+            .type(Constants.DocumentType.OTHER)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user3)
@@ -442,7 +479,7 @@ public class DataInitializerService {
 
         DocumentModel document5 = DocumentModel.builder()
             .name("RESULTADO DE LABORATORIO")
-            .type(DocumentType.LABORATORY_RESULT)
+            .type(Constants.DocumentType.LABORATORY_RESULT)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user3)
@@ -451,7 +488,7 @@ public class DataInitializerService {
 
         DocumentModel document6 = DocumentModel.builder()
             .name("RADIOGRAFIA")
-            .type(DocumentType.RADIOGRAPHY)
+            .type(Constants.DocumentType.DIAGNOSTIC_IMAGE)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user3)
@@ -460,7 +497,7 @@ public class DataInitializerService {
 
         DocumentModel document7 = DocumentModel.builder()
             .name("RESULTADO DE ESPECIALISTA")
-            .type(DocumentType.OTHER)
+            .type(Constants.DocumentType.OTHER)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user2)
@@ -469,7 +506,7 @@ public class DataInitializerService {
 
         DocumentModel document8 = DocumentModel.builder()
             .name("RESULTADO DE LABORATORIO")
-            .type(DocumentType.LABORATORY_RESULT)
+            .type(Constants.DocumentType.LABORATORY_RESULT)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user2)
@@ -478,7 +515,7 @@ public class DataInitializerService {
 
         DocumentModel document9 = DocumentModel.builder()
             .name("RADIOGRAFIA")
-            .type(DocumentType.RADIOGRAPHY)
+            .type(Constants.DocumentType.DIAGNOSTIC_IMAGE)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user2)
@@ -487,7 +524,7 @@ public class DataInitializerService {
 
         DocumentModel document10 = DocumentModel.builder()
             .name("RESULTADO DE ESPECIALISTA")
-            .type(DocumentType.OTHER)
+            .type(Constants.DocumentType.OTHER)
             .uploadDate(java.sql.Date.valueOf(LocalDate.now()))
             .patient(user1)
             .uploadBy(user3)
@@ -495,6 +532,74 @@ public class DataInitializerService {
             .build();
 
         documentRepository.saveAll(List.of(document1, document2, document3, document4, document5, document6, document7, document8, document9, document10));
+
+        
+
+        OrderModel order1 = OrderModel.builder()
+            .orderType(Constants.OrderType.MEDICATION)
+            .status(Constants.OrderStatus.PENDING)
+            .description("Prescripcion de medicamentos")
+            .patient(user1)
+            .doctor(user2)
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        OrderModel order2 = OrderModel.builder()
+            .orderType(Constants.OrderType.LAB_APPOINTMENT)
+            .status(Constants.OrderStatus.AUTHORIZED)
+            .description("Orden para examen de materia fecal por motivo addyacente, usuario requiere de atencion urgente, etc")
+            .authorizedBy(user3)
+            .authorizedAt(LocalDateTime.now())
+            .patient(user1)
+            .doctor(user2)
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        OrderModel order3 = OrderModel.builder()
+            .orderType(Constants.OrderType.SPECIALIST_APPOINTMENT)
+            .status(Constants.OrderStatus.AUTHORIZED)
+            .description("Orden para consulta con especialista")
+            .authorizedBy(user3)
+            .authorizedAt(LocalDateTime.now())
+            .patient(user1)
+            .doctor(user2)
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        OrderModel order4 = OrderModel.builder()
+            .orderType(Constants.OrderType.MEDICATION)
+            .status(Constants.OrderStatus.REQUESTING)
+            .description("Prescripcion de terapias")
+            .authorizedBy(user3)
+            .authorizedAt(LocalDateTime.now())
+            .patient(user1)
+            .doctor(user2)
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        OrderModel order5 = OrderModel.builder()
+            .orderType(Constants.OrderType.LAB_APPOINTMENT)
+            .status(Constants.OrderStatus.COMPLETED)
+            .description("Orden para examen de materia fecal por motivo addyacente, usuario requiere de atencion urgente, etc")
+            .authorizedBy(user3)
+            .authorizedAt(LocalDateTime.now())
+            .patient(user1)
+            .doctor(user2)
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        OrderModel order6= OrderModel.builder()
+            .orderType(Constants.OrderType.MEDICATION)
+            .status(Constants.OrderStatus.AUTHORIZED)
+            .description("Orden para acetaminofen, etc")
+            .authorizedBy(user3)
+            .authorizedAt(LocalDateTime.now())
+            .patient(user1)
+            .doctor(user2)
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        orderRepository.saveAll(List.of(order1, order2, order3, order4, order5, order6));
 
         
 

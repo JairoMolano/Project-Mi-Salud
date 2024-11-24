@@ -9,9 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+
+import co.usco.demo.models.Constants;
 import co.usco.demo.models.DocumentModel;
 import co.usco.demo.models.UserModel;
-import co.usco.demo.models.constants.DocumentType;
 import co.usco.demo.repositories.DocumentRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +34,7 @@ public class DocumentService {
     private UserService userService;
 
     // Subir un archivo
-    public void uploadFile(MultipartFile file, DocumentType documentType, Long patientId) throws IOException {
+    public void uploadFile(MultipartFile file, Constants.DocumentType documentType, Long patientId) throws IOException {
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             String uniqueFileName = System.currentTimeMillis() + "-" + fileName;
@@ -57,7 +59,8 @@ public class DocumentService {
     // Listar documentos de un usuario
     public Page<DocumentModel> getDocumentsForCurrentUser(int page, int size) {
         UserModel user = userService.getSessionUser();
-        return documentRepository.findByPatient(user, PageRequest.of(page, size));
+        return documentRepository.findByPatient(user, 
+            PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "uploadDate")));
     }
 
     // Obtener documento por ID
@@ -87,7 +90,7 @@ public class DocumentService {
     // Listar documentos de un usuario por tipo
     public Page<DocumentModel> getDocumentsForCurrentUserByType(String documentType, int page, int size) {
         UserModel user = userService.getSessionUser();
-        DocumentType type = DocumentType.valueOf(documentType);
+        Constants.DocumentType type = Constants.DocumentType.valueOf(documentType);
         return documentRepository.findByPatientAndType(user, type, PageRequest.of(page, size));
     }
 

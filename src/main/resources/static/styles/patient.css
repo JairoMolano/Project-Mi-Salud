@@ -1,6 +1,28 @@
+h1{
+    font-size: 3em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.services{
+    
+    .card{
+        align-items: center;
+        border-color: #5eb08b;
+        background-color: white;
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            color: #5eb08b;
+        }
+    }
+}
+
 .navbar{
     background-color: #5eb08b;
-    
 }
 
 main{
@@ -14,10 +36,67 @@ main{
         background-color: #cbcaca;
         border-radius: 30px;
     }
+    h1{
+        font-size: 5em;
+    }
 }
 
 .services{
     .card{
         border-color: #5eb08b;
     }
+}
+
+.card{
+    background-color: #cbcaca;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+    background-color: #5eb08b;
+}
+
+.nav-pills .nav-link{
+    color: black;
+}
+
+.btn-danger{
+    height: 43px;
+}
+
+.action-buttons{
+    .btn-primary{
+        font-size: large;
+        background-color: #5eb08b;
+        border: solid 2px #5eb08b;
+    }
+    .btn-primary:active{
+        background-color: #4a8a6e;
+        border-color: #4a8a6e;
+    }
+    .btn-primary:hover{
+        background-color: #8dbfa8;
+        border: solid 2px #8dbfa8;
+    }
+
+    .btn-secondary{
+        font-size: large;
+    }
+}
+
+.btn-primary{
+    font-size: large;
+    background-color: #5eb08b;
+    border: solid 2px #5eb08b;
+}
+.btn-primary:active{
+    background-color: #4a8a6e;
+    border-color: #4a8a6e;
+}
+.btn-primary:hover{
+    background-color: #8dbfa8;
+    border: solid 2px #8dbfa8;
+}
+
+.btn-secondary{
+    font-size: large;
 }

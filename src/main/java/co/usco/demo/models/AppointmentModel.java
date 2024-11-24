@@ -2,7 +2,6 @@ package co.usco.demo.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import co.usco.demo.models.constants.AppointmentStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,8 +35,15 @@ public class AppointmentModel {
     @Column(name = "appointment_time")
     private LocalTime time;
 
+    @Column(name = "appointment_place")
+    private  Constants.AppointmentPlace place;
+
     @Column(name = "appointment_status")
-    private AppointmentStatus status;
+    private Constants.AppointmentStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private OrderModel order;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id", referencedColumnName = "user_id")

@@ -3,6 +3,7 @@
 .home-navbar{
     .navbar{
         font-size: large;
+        
         .btn-primary{
             font-size: large;
             background-color: #5eb08b;
@@ -22,11 +23,7 @@
     }
 }
 
-.btn-primary{
-    font-size: large;
-    background-color: #5eb08b;
-    border: solid 2px #5eb08b;
-}
+
 
 .footer{
     background-color: #303432;
@@ -48,14 +45,20 @@
         color: black;
     }
     .nav-item:active{
-        color: white;
+        color: #cbcaca;
     }
     .nav-item:hover{
-        color: white;
+        color: #cbcaca;
     }
     .dropdown-item:hover{
         color: black;
         background-color: #cbcaca;
+    }
+    .btn-secondary{
+        font-size: large;
+        background-color: #cbcaca;
+        border-color: #cbcaca;
+        border-radius: 40px;
     }
 }
 

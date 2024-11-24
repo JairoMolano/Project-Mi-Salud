@@ -1,7 +1,6 @@
 package co.usco.demo.models;
 
 import java.util.Set;
-import co.usco.demo.models.constants.Permission;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +29,6 @@ public class RoleModel {
     private String roleName;
 
     @Column(name = "permissions")
-    private Set<Permission> permissions;
+    private Set<Constants.Permission> permissions;
 
 }

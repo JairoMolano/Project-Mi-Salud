@@ -20,32 +20,34 @@
 <body>
 
   <!--patient-navbar from shared_components-->  
+  <div th:replace="~{components/portal-bar :: portal-bar}"></div>
   <div th:replace="~{components/patient-navbar :: patient-navbar}"></div>
 
   <!--Main content-->
   <div class="container mt-5">
-    <h2 class="mb-4">Resultados Médicos</h2>
+    <h2 class="mb-4" th:text="#{resultsAndDocuments}" aria-label="#{resultsAndDocuments}"></h2>
 
 
-    <form th:action="@{/patient/filter-results}" method="get">
-        <label for="documentTypeFilter" class="form-label">Filtrar documentos:</label>
-        <select id="documentTypeFilter" name="documentType" class="form-select">
-            <option value="">Todos</option>
-            <option value="LABORATORY_RESULT" th:selected="${documentType == 'LABORATORY_RESULT'}">Resultado de Laboratorio</option>
-            <option value="RADIOGRAPHY" th:selected="${documentType == 'REDIOGRAPHY'}">Radiografía</option>
-            <option value="OTHER" th:selected="${documentType == 'OTHER'}">Otro</option>
-        </select>
-        <button type="submit">Aplicar</button>
-    </form>
+    <div class="mb-4">
+        <form th:action="@{/patient/filter-results}" method="get" class="d-flex align-items-center gap-2">
+            <label for="documentTypeFilter" class="form-label mb-0" th:text="#{filterDocuments}" aria-label="#{filterDocuments}"></label>
+            <select id="documentTypeFilter" name="documentType" class="form-select">
+                <option value="" th:text="#{all}" aria-label="#{all}"></option>
+                <option value="LABORATORY_RESULT" th:selected="${documentType == 'LABORATORY_RESULT'}" th:text="#{labResults}" aria-label="#{labResults}"></option>
+                <option value="DIAGNOSTIC_IMAGE" th:selected="${documentType == 'DIAGNOSTIC_IMAGE'}" th:text="#{diagnoticImages}" aria-label="#{diagnoticImages}"></option>
+                <option value="OTHER" th:selected="${documentType == 'OTHER'}" th:text="#{other}" aria-label="#{other}"></option>
+            </select>
+            <button class="btn btn-primary" type="submit" th:text="#{aplicate}" aria-label="#{aplicate}"></button>
+        </form>
+    </div>
     
-  
-  
+    
 
     <div class="row">
       <div class="col-12" th:if="${documents.isEmpty()}">
           <div class="alert alert-info text-center">
               <img src="/img/logo-1.png" alt="No hay documentos" style="width: 150px; margin-bottom: 15px;">
-              <p>No hay documentos disponibles.</p>
+              <p th:text="#{noDocuments}" aria-label="#{noDocuments}"></p>
           </div>
       </div>
   
@@ -58,8 +60,8 @@
                   </div>
                   <h5 class="card-title mt-3" th:text="${document.name}"></h5>
                   <p class="card-text" th:text="${#dates.format(document.uploadDate, 'dd/MM/yyyy HH:mm a')}"></p>
-                  <p class="card-text">Subido por: <span th:text="${document.uploadBy.firstName}"></span> <span th:text="${document.uploadBy.lastName}"></span></p>
-                  <a th:href="@{'/patient' + '/download/' + ${document.id}}" class="btn btn-primary btn-sm" target="_blank">Ver</a>
+                  <strong th:text="#{uploadBy}" aria-label="#{uploadBy}"></strong> <span th:text="${document.uploadBy.firstName + ' ' + document.uploadBy.lastName}"></span><br><br>
+                  <a th:href="@{'/patient' + '/download/' + ${document.id}}" class="btn btn-primary btn-sm" target="_blank" th:text="#{watch}" aria-label="#{watch}"></a>
               </div>
           </div>
       </div>
@@ -88,36 +90,7 @@
   <!--Bootstrap 5.3.3 JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script>
-        document.querySelectorAll('[id^="pdf-container-"]').forEach(container => {
-            const documentId = container.id.split('-')[2];
-            const url = `/patient/download/${documentId}`;
-            pdfjsLib.getDocument(url).promise.then(pdf => {
-                pdf.getPage(1).then(page => {
-                    const viewport = page.getViewport({ scale: 1 });
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    canvas.style.position = "absolute";
-                    canvas.style.top = "0";
-                    canvas.style.left = "0";
-                    canvas.style.width = "100%";
-                    canvas.style.height = "100%";
-                    canvas.style.objectFit = "cover";
-                    container.appendChild(canvas);
-                    const renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-                    page.render(renderContext);
-                });
-            }).catch(error => {
-                console.error(`Error al cargar el PDF con ID ${documentId}:`, error);
-                container.innerHTML = "<p>Error al cargar el documento</p>";
-            });
-        });
-    </script>
+  <script src="/js/load-document-preview.js"></script>
 
 </body>
 </html>

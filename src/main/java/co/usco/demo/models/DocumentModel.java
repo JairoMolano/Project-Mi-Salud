@@ -2,7 +2,6 @@ package co.usco.demo.models;
 
 import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
-import co.usco.demo.models.constants.DocumentType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,7 +42,7 @@ public class DocumentModel {
     private Date uploadDate;
 
     @Column(name = "document_type")
-    private DocumentType type;
+    private Constants.DocumentType type;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id", referencedColumnName = "user_id")

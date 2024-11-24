@@ -20,23 +20,24 @@
 <body>
 
   <!--patient-navbar from shared_components-->  
+  <div th:replace="~{components/portal-bar :: portal-bar}"></div>
   <div th:replace="~{components/patient-navbar :: patient-navbar}"></div>
 
   <div class="container">
-
     <div class="row">
       <div class="welcome">
         <div class="d-flex justify-content-center mt-5">
-          <div class="card">
+          <div class="card w-100">
             <div class="row g-0">
-              <div class="col-md-9">
+              <div class="col-md-8">
                 <div class="card-body p-5">
-                  <h1 class="card-title">Bienvenido, <span th:text="${user.firstName}"></span></h1>
-                  <p class="card-text">List@ para iniciar etc etc etc etc</p>
+                  <h1 class="card-title" th:text="#{hi}" aria-label="#{hi}"></h1>
+                  <h1><span th:text="${user.firstName}"></span></h1>
+                  <p class="card-text" th:text="#{welcome}" aria-label="#{welcome}"></p>
                 </div>
               </div>
-              <div class="col-md-3">
-                <img src="/img/logo-1.png" class="img-fluid rounded-end" alt="...">
+              <div class="col-md-4">
+                <img src="/img/patient-home-preview.png" class="img-fluid rounded-end" alt="...">
               </div>
             </div>
           </div>
@@ -45,80 +46,40 @@
     </div>
 
     <div class="row">
-      <div class="services p-5">
+      <div class="services mt-5">
           <div class="row align-items-center mb-3">
             <div class="col-md-12">
-              <h2>Servicios destacados</h2>
+              <h1 th:text="#{featuredServices}" aria-label="#{featuredServices}"></h1>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/calendar-icon.png" alt="" class="me-3" width="50">
-                <a href="">Agenda tu próxima consulta en segundos.</a>
+                <a href="/patient/appointments/schedule" th:text="#{featuredServices1}" aria-label="#{featuredServices1}"></a>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/scheduled-icon.png" alt="" class="me-3" width="50">
-                <a href="">Sigue el estado de tus citas.</a>
+                <a href="/patient/appointments" th:text="#{featuredServices2}" aria-label="#{featuredServices2}"></a>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/authorized-icon.png" alt="" class="me-3" width="50">
-                <a href="">Gestiona tus autorizaciones médicas.</a>
+                <a href="/patient/authorizations" th:text="#{featuredServices3}" aria-label="#{featuredServices3}"></a>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-3">
               <div class="card p-3 d-flex flex-row">
                 <img src="/img/document-icon.png" alt="" class="me-3" width="50">
-                <a href="">Accede a tus documentos médicos.</a>
+                <a href="/patient/results" th:text="#{featuredServices4}" aria-label="#{featuredServices4}"></a>
               </div>
             </div>
           </div>
       </div>
     </div>
-
-    <div class="row">
-      <div class="agenda">
-          <div class="row px-5 mb-3">
-            <h2>Agenda:</h2>
-          </div>
-          <div class="row px-5">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-      </div>
-    </div>
-
   </div>
 
   <!--Bootstrap 5.3.3 JS-->

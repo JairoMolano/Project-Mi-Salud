@@ -21,7 +21,30 @@
   <!--medical-navbar from shared_components-->  
   <div th:replace="~{components/medical-navbar :: medical-navbar}"></div>
 
-  <h1>Vista Medical Staff: dashboard</h1>
+  <h1>Vista Medical Staff</h1>
+
+  <h2>Subir Documento de Paciente</h2>
+
+  <form th:action="@{/medical-staff/upload-document}" method="post" enctype="multipart/form-data">
+    <label for="file">Seleccionar PDF:</label>
+    <input type="file" name="file" id="file" accept="application/pdf" required/>
+    
+    <label for="documentType">Tipo de Documento:</label>
+    <select name="documentType" id="documentType" required>
+        <option value="LABORATORY_RESULT">Resultado de Laboratorio</option>
+        <option value="REDIOGRAPHY">Radiografía</option>
+        <option value="OTHER">Otro</option>
+    </select>
+
+    <label for="patientId">Paciente:</label>
+    <input type="text" name="patientId" id="patientId" required/>
+    
+    <button type="submit">Subir</button>
+  </form>
+
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" class="btn btn-danger">Logout</button>
+  </form>
 
 
   <!--Bootstrap 5.3.3 JS-->

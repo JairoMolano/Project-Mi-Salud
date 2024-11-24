@@ -22,7 +22,6 @@
   <!--patient-navbar from shared_components-->  
   <div th:replace="~{components/portal-bar :: portal-bar}"></div>
   <div th:replace="~{components/patient-navbar :: patient-navbar}"></div>
-  
 
   <div class="container mt-5">
     <div class="row align-items-center">
@@ -33,29 +32,26 @@
          </div>
       </div> 
       </div>
-    <div class="col-md-6 mb-5">
-      <h1 th:text="#{selectTypeOfAppointment}" aria-label="#{selectTypeOfAppointment}"></h1>
-    <form th:action="@{/patient/appointments/schedule}" method="post">
-      <div class="mb-3">
-        <select class="form-select" id="appointmentType " name="appointmentType" required>
-          <option value="" disabled selected th:text="#{typeOfAppointment}" aria-label="#{typeOfAppointment}"></option>
-          <option value="GENERAL" th:text="#{generalMedicine}" aria-label="#{generalMedicine}"></option>
-          <option value="DENTISTRY" th:text="#{dentist}" aria-label="#{dentist}"></option>
-          <option value="LABORATORY" th:text="#{lab}" aria-label="#{lab}"></option>
-          <option value="SPECIALIST" th:text="#{specialist}" aria-label="#{specialist}"></option>
-        </select>
-      </div>
-      <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-        <p th:text="${errorMessage}"></p>
-      </div>
-      <div class="action-buttons">
-        <a href="/patient/appointments" class="btn btn-secondary" th:text="#{back}" aria-label="#{back}"></a>
-        <button type="submit" class="btn btn-primary" th:text="#{continue}" aria-label="#{continue}"></button>
-      </div>
+      <div class="col-md-6 mb-5">
+        <h1 th:text="#{selectAuthorizedOrder}" aria-label="#{selectAuthorizedOrder}"></h1>
+    <form th:action="@{/patient/appointments/confirm-order}" method="post">
+        <div class="mb-3">
+            <select class="form-select" id="order" name="orderId" required>
+                <option value="" disabled selected th:text="#{selectOrder}" aria-label="#{selectOrder}"></option>
+                <option th:each="order : ${authorizedOrders}" 
+                        th:value="${order.id}" 
+                        th:text="${order.orderType} + ' - ' + ${order.createdAt}"></option>
+            </select>
+        </div>
+        <input type="hidden" name="appointmentType" th:value="${appointmentType}" />
+        <div class="action-buttons">
+          <a href="/patient/appointments/schedule" class="btn btn-secondary" th:text="#{back}" aria-label="#{back}"></a>
+          <button type="submit" class="btn btn-primary" th:text="#{continue}" aria-label="#{continue}"></button>
+        </div>
     </form>
+      </div>
+
     </div>
-    
-  </div>
   </div>
 
   <!--Bootstrap 5.3.3 JS-->
