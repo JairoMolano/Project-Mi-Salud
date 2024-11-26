@@ -100,3 +100,17 @@ main{
 .btn-secondary{
     font-size: large;
 }
+
+.page-link{
+    color: black;
+}
+
+.page-link:hover{
+    color: #5eb08b;
+}
+
+.page-item.active .page-link{
+    background-color: #5eb08b;
+    border-color: #5eb08b;
+}
+

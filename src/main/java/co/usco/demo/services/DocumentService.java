@@ -17,6 +17,7 @@ import co.usco.demo.repositories.DocumentRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -57,8 +58,7 @@ public class DocumentService {
     }
 
     // Listar documentos de un usuario
-    public Page<DocumentModel> getDocumentsForCurrentUser(int page, int size) {
-        UserModel user = userService.getSessionUser();
+    public Page<DocumentModel> getDocumentsForCurrentUser(int page, int size, UserModel user) {
         return documentRepository.findByPatient(user, 
             PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "uploadDate")));
     }
@@ -95,8 +95,8 @@ public class DocumentService {
     }
 
     // Agregar atributos de documentos para el usuario actual
-    public void addDocumentAttributesForCurrentUser(Model model, int page, int pageSize) {
-        Page<DocumentModel> documentPage = getDocumentsForCurrentUser(page, pageSize);
+    public void addDocumentAttributesForCurrentUser(Model model, int page, int pageSize, UserModel user) {
+        Page<DocumentModel> documentPage = getDocumentsForCurrentUser(page, pageSize, user);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", documentPage.getTotalPages());
         model.addAttribute("documents", documentPage.getContent());
@@ -107,7 +107,7 @@ public class DocumentService {
         Page<DocumentModel> documentPage;
 
         if (documentType == null || documentType.isEmpty()) {
-            documentPage = getDocumentsForCurrentUser(page, pageSize);
+            documentPage = getDocumentsForCurrentUser(page, pageSize, userService.getSessionUser());
         } else {
             documentPage = getDocumentsForCurrentUserByType(documentType, page, pageSize);
             model.addAttribute("documentType", documentType);

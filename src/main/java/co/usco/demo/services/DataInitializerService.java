@@ -102,10 +102,7 @@ public class DataInitializerService {
             .city("Medellin")
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
-            .roles(Set.of(roleMedicalStaff))
-            .medicalSpecialty(Constants.MedicalSpecialty.GENERAL)
-            .horaryStart(LocalTime.of(6, 0))
-            .horaryEnd(LocalTime.of(18, 0))
+            .roles(Set.of(rolePatient))
             .build();
 
         UserModel user3 = UserModel.builder()
@@ -121,10 +118,7 @@ public class DataInitializerService {
             .city("Bogota")
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
-            .roles(Set.of(roleMedicalStaff))
-            .medicalSpecialty(Constants.MedicalSpecialty.DENTISTRY)
-            .horaryStart(LocalTime.of(6, 0))
-            .horaryEnd(LocalTime.of(18, 0))
+            .roles(Set.of(rolePatient))
             .build();
 
         UserModel user4 = UserModel.builder()
@@ -140,7 +134,7 @@ public class DataInitializerService {
             .city("Cali")
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
-            .roles(Set.of(roleSupportStaff))
+            .roles(Set.of(roleAdmin))
             .build();
 
         UserModel user5 = UserModel.builder()
@@ -172,7 +166,10 @@ public class DataInitializerService {
             .city("Barranquilla")
             .password(passwordEncoder.encode("1234"))
             .userActive(true)
-            .roles(Set.of(rolePatient))
+            .roles(Set.of(roleMedicalStaff))
+            .medicalSpecialty(Constants.MedicalSpecialty.GENERAL)
+            .horaryStart(LocalTime.of(6, 0))
+            .horaryEnd(LocalTime.of(18, 0))
             .build();
 
         UserModel user7 = UserModel.builder()
@@ -186,8 +183,12 @@ public class DataInitializerService {
             .address("Avenida 40 # 50-60")
             .department("Bolivar")
             .city("Cartagena")
-            .userActive(false)
-            .roles(Set.of(rolePatient))
+            .userActive(true)
+            .password(passwordEncoder.encode("1234"))
+            .roles(Set.of(roleMedicalStaff))
+            .medicalSpecialty(Constants.MedicalSpecialty.DENTISTRY)
+            .horaryStart(LocalTime.of(6, 0))
+            .horaryEnd(LocalTime.of(18, 0))
             .build();
 
         UserModel user8 = UserModel.builder()
@@ -327,65 +328,63 @@ public class DataInitializerService {
 
         OrderModel order1 = OrderModel.builder()
             .orderType(Constants.OrderType.MEDICATION)
-            .status(Constants.OrderStatus.PENDING)
-            .description("Prescripcion de medicamentos")
+            .status(Constants.OrderStatus.AUTHORIZED)
+            .description("MOTIVO DE ORDEN: Paciente con diagnóstico de diabetes mellitus tipo 2. Presenta cifras de glucemia elevadas a pesar de tratamiento actual. Se ajusta esquema terapéutico. SE SOLICITA: Agregar metformina 500 mg 1 comprimido por vía oral 2 veces al día.")
             .patient(user1)
-            .doctor(user2)
+            .doctor(user6)
             .createdAt(LocalDateTime.now())
+            .authorizedBy(user5)
+            .authorizedAt(LocalDateTime.now())
             .build();
 
         OrderModel order2 = OrderModel.builder()
             .orderType(Constants.OrderType.LAB_APPOINTMENT)
             .status(Constants.OrderStatus.AUTHORIZED)
-            .description("Orden para examen de materia fecal por motivo addyacente, usuario requiere de atencion urgente, etc")
-            .authorizedBy(user3)
+            .description("MOTIVO DE ORDEN: Paciente con dolor abdominal en cuadrante superior derecho de 24 horas de evolución. Sospecha de colecistitis aguda. SE SOLICITA: Hemograma completo. Perfil bioquímico (incluyendo bilirrubina total y directa, transaminasas, fosfatasa alcalina, gamma-glutamil transferasa).")
+            .authorizedBy(user5)
             .authorizedAt(LocalDateTime.now())
             .patient(user1)
-            .doctor(user2)
+            .doctor(user6)
             .createdAt(LocalDateTime.now())
             .build();
 
         OrderModel order3 = OrderModel.builder()
             .orderType(Constants.OrderType.SPECIALIST_APPOINTMENT)
-            .status(Constants.OrderStatus.AUTHORIZED)
-            .description("Orden para consulta con especialista")
-            .authorizedBy(user3)
-            .authorizedAt(LocalDateTime.now())
+            .status(Constants.OrderStatus.REQUESTING)
+            .description("MOTIVO DE ORDEN: Paciente con hipertensión arterial resistente a tratamiento. Se recomienda valoración por especialista en Nefrología para descartar enfermedad renal crónica y ajustar tratamiento antihipertensivo. SE SOLICITA: Agendar cita con especialista en un plazo no mayor a 15 días.")
             .patient(user1)
-            .doctor(user2)
+            .doctor(user6)
             .createdAt(LocalDateTime.now())
             .build();
 
         OrderModel order4 = OrderModel.builder()
-            .orderType(Constants.OrderType.MEDICATION)
-            .status(Constants.OrderStatus.REQUESTING)
-            .description("Prescripcion de terapias")
-            .authorizedBy(user3)
-            .authorizedAt(LocalDateTime.now())
+            .orderType(Constants.OrderType.LAB_APPOINTMENT)
+            .status(Constants.OrderStatus.PENDING)
+            .description("MOTIVO DE ORDEN: Paciente con hernia inguinal derecha. Se indica reparación quirúrgica por laparoscopía. SE SOLICITA: Realizar exámenes preoperatorios (hemograma, coagulación, grupo sanguíneo y factor Rh).")
             .patient(user1)
-            .doctor(user2)
+            .doctor(user6)
             .createdAt(LocalDateTime.now())
             .build();
 
         OrderModel order5 = OrderModel.builder()
             .orderType(Constants.OrderType.LAB_APPOINTMENT)
             .status(Constants.OrderStatus.COMPLETED)
-            .description("Orden para examen de materia fecal por motivo addyacente, usuario requiere de atencion urgente, etc")
-            .authorizedBy(user3)
+            .description("MOTIVO DE ORDEN: Paciente con cefaleas recurrentes y vómitos. Sospecha de hipertensión intracraneal. SE SOLICITA: Resonancia magnética cerebral sin contraste.")
+            .authorizedBy(user5)
             .authorizedAt(LocalDateTime.now())
             .patient(user1)
-            .doctor(user2)
+            .doctor(user6)
             .createdAt(LocalDateTime.now())
             .build();
 
         OrderModel order6= OrderModel.builder()
             .orderType(Constants.OrderType.MEDICATION)
-            .status(Constants.OrderStatus.AUTHORIZED)
-            .description("Orden para acetaminofen, etc")
-            .authorizedBy(user3)
+            .status(Constants.OrderStatus.COMPLETED)
+            .description("MOTIVO DE ORDEN: Paciente con diagnóstico de osteoartritis de rodilla. Presenta dolor crónico y limitación funcional. SE SOLICITA: Paracetamol 500 mg cada 8 horas por vía oral como primera línea analgésica. Ibuprofeno 600 mg cada 8 horas por vía oral si el dolor persiste.")
+            .authorizedBy(user5)
             .authorizedAt(LocalDateTime.now())
             .patient(user1)
-            .doctor(user2)
+            .doctor(user6)
             .createdAt(LocalDateTime.now())
             .build();
 
@@ -396,20 +395,29 @@ public class DataInitializerService {
             .time(LocalTime.of(8, 0))
             .place(Constants.AppointmentPlace.CLINIC_CENTER)
             .status(Constants.AppointmentStatus.SCHEDULED)
-            .doctor(user2)
+            .doctor(user6)
             .patient(user1)
             .build();
 
         AppointmentModel appointment2 = AppointmentModel.builder()
-            .date(LocalDate.of(2024, 11, 25))
+            .date(LocalDate.now())
             .time(LocalTime.of(9, 0))
             .place(Constants.AppointmentPlace.CLINIC_CENTER)
             .status(Constants.AppointmentStatus.SCHEDULED)
-            .doctor(user2)
+            .doctor(user7)
             .patient(user1)
             .build();
 
-        appointmentRepository.saveAll(List.of(appointment1, appointment2));
+        AppointmentModel appointment3 = AppointmentModel.builder()
+            .date(LocalDate.of(2024, 11, 25))
+            .time(LocalTime.of(9, 0))
+            .place(Constants.AppointmentPlace.CLINIC_CENTER)
+            .status(Constants.AppointmentStatus.FINISHED)
+            .doctor(user6)
+            .patient(user1)
+            .build();
+
+        appointmentRepository.saveAll(List.of(appointment1, appointment2, appointment3));
 
         
         generateAppointmentsForMedicalStaff();
@@ -454,7 +462,7 @@ public class DataInitializerService {
     }
     
 
-    @Scheduled(cron = "0 0 0 * * ?") // Ejecutar a medianoche todos los días
+    @Scheduled(cron = "0 0 0 * * ?")
     public void generateDailyAppointments() {
         generateAppointmentsForMedicalStaff();
     }

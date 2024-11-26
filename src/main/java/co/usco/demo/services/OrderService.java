@@ -2,6 +2,8 @@ package co.usco.demo.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import co.usco.demo.models.Constants.OrderType;
 import co.usco.demo.models.AppointmentModel;
@@ -26,8 +28,7 @@ public class OrderService {
     @Lazy
     private AppointmentService appointmentService;
 
-    public void addUserOrders(Model model) {
-        UserModel user = userService.getSessionUser();
+    public void addUserOrders(Model model, UserModel user) {
         model.addAttribute("pendingOrders", getPendingOrders(user));
         model.addAttribute("authorizedOrders", getAuthorizedOrders(user));
         model.addAttribute("completedOrders", getCompletedOrders(user));
@@ -91,8 +92,22 @@ public class OrderService {
 
 
 
+    public List<OrderModel> getAllOrdersByStatus(Constants.OrderStatus status) {
+        return orderRepository.findByStatus(status, Sort.by(Sort.Direction.DESC, "createdAt"));
+    }
 
+    public void authorizeOrder(Long orderId) {
+        OrderModel order = getOrderById(orderId);
+        order.setStatus(Constants.OrderStatus.AUTHORIZED);
+        order.setAuthorizedAt(LocalDateTime.now());
+        order.setAuthorizedBy(userService.getSessionUser());
+        orderRepository.save(order);
+    }
 
+    public List<OrderModel> getPendingOrdersByPatientId(Long patientId) {
+        UserModel user = userService.getUserById(patientId);
+        return getPendingOrders(user);
+    }
 
 
 

@@ -10,6 +10,7 @@
     
   <!--Customs CSS-->
   <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/patient.css">
 
   <!--Tab-->
   <title>Portal: Mi Salud | Medical-staff</title>
@@ -22,7 +23,58 @@
   <div th:replace="~{components/portal-bar :: portal-bar}"></div>
   <div th:replace="~{components/medical-navbar :: medical-navbar}"></div>
 
-  <h1>Vista Medical Staff: dashboard</h1>
+  <div class="container">
+    <div class="row">
+      <div class="welcome">
+        <div class="d-flex justify-content-center mt-5">
+          <div class="card w-100">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body p-5">
+                  <h1 class="card-title" th:text="#{hi}" aria-label="#{hi}"></h1>
+                  <h1><span th:text="${user.firstName}"></span></h1>
+                  <p class="card-text" th:text="#{welcomeDoctor}" aria-label="#{welcomeDoctor}"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <img src="/img/medical-home-preview.png" class="img-fluid rounded-end" alt="...">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="services mt-5">
+          <div class="row align-items-center mb-3">
+            <div class="col-md-12">
+              <h1 th:text="#{featuredServices}" aria-label="#{featuredServices}"></h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/calendar-icon.png" alt="" class="me-3" width="50">
+                <a href="/medical-staff/day-appointments" th:text="#{keepYourAppointmensToDay}" aria-label="#{keepYourAppointmensToDay}"></a>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/scheduled-icon.png" alt="" class="me-3" width="50">
+                <a href="/medical-staff/all-appointments" th:text="#{checkYourScheduledAppointments}" aria-label="#{checkYourScheduledAppointments}"></a>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/history-icon.png" alt="" class="me-3" width="50">
+                <a href="/medical-staff/patients" th:text="#{controlYourPatients}" aria-label="#{controlYourPatients}"></a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
 
 
   <!--Bootstrap 5.3.3 JS-->

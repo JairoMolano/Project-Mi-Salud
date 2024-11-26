@@ -15,4 +15,6 @@ public interface OrderRepository extends JpaRepository<OrderModel, Long> {
 
     List<OrderModel> findByPatientAndOrderTypeAndStatus(UserModel user, Constants.OrderType type, Constants.OrderStatus status, Sort sort);
 
+    List<OrderModel> findByStatus(Constants.OrderStatus status, Sort sort);
+
 }

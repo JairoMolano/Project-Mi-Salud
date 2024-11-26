@@ -33,8 +33,7 @@ public class AppointmentService {
         return messageSource.getMessage(key, null, LocaleContextHolder.getLocale());
     }
 
-    public void addUserAppointments(Model model) {
-        UserModel user = userService.getSessionUser();
+    public void addUserAppointments(Model model, UserModel user) {
         model.addAttribute("scheduledAppointments", getScheduledAppointmentsByPatient(user));
         model.addAttribute("finishedAppointments", getFinisheddAppointmentsByPatient(user));
     }
@@ -90,16 +89,12 @@ public class AppointmentService {
         cancelAppointment(appointmentId);
     }
 
-    public List<AppointmentModel> getScheduledAppointmentsByDoctorAndDate() {
+    
+    
+    public List<AppointmentModel> getAppointmentsByStatusAndDate(Constants.AppointmentStatus status) {
         UserModel doctor = userService.getSessionUser();
         LocalDate today = LocalDate.now();
-        return appointmentRepository.findByStatusAndDoctorAndDate(Constants.AppointmentStatus.SCHEDULED, doctor, today, 
-                Sort.by(Sort.Direction.ASC, "date"));
-    }
-    
-    public List<AppointmentModel> getAppointmentsByStatus(Constants.AppointmentStatus status) {
-        UserModel doctor = userService.getSessionUser();
-        return appointmentRepository.findByStatusAndDoctor(status, doctor, Sort.by(Sort.Direction.ASC, "date"));
+        return appointmentRepository.findByStatusAndDoctorAndDate(status, doctor, today, Sort.by(Sort.Direction.ASC, "date"));
     }
 
     public List<AppointmentModel> getAllScheduledAppointmentsByDoctor() {
@@ -108,10 +103,45 @@ public class AppointmentService {
                 Sort.by(Sort.Direction.ASC, "date"));
     }
 
+
+
+
+
     public List<UserModel> getPatientsByDoctor() {
         UserModel doctor = userService.getSessionUser();
         return appointmentRepository.findDistinctPatientsByDoctor(doctor);
     }
+
+
+    public List<UserModel> getPatientsByDoctorAndDocumentNumber(String documentNumber) {
+        UserModel doctor = userService.getSessionUser();
+        return appointmentRepository.findDistinctPatientsByDoctorAndDocumentNumber(doctor, documentNumber);
+    }
+
+
+
+
+        
+    public List<AppointmentModel> getScheduledAppointmentsByDoctorExcludingToday() {
+        UserModel doctor = userService.getSessionUser();
+        LocalDate today = LocalDate.now();
+        return appointmentRepository.findByStatusAndDoctorAndDateNot(Constants.AppointmentStatus.SCHEDULED, doctor, today, 
+            Sort.by(Sort.Direction.ASC, "date"));
+    }
+
+        public UserModel getPatientByAppointmentId(Long appointmentId) {
+        AppointmentModel appointment = getAppointmentById(appointmentId);
+        return appointment.getPatient();
+    }
+
+    public void finishAppointment(Long appointmentId) {
+        AppointmentModel appointment = getAppointmentById(appointmentId);
+        appointment.setStatus(Constants.AppointmentStatus.FINISHED);
+        appointmentRepository.save(appointment);
+    }
+
+
+
     
 
     // Auxiliary services

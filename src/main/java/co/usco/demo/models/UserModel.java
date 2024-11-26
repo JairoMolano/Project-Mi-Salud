@@ -77,6 +77,10 @@ public class UserModel {
     @Column(name = "verification_code")
     private String verificationCode;
 
+    @Column(name = "profile_picture_path")
+    @Builder.Default
+    private String profilePicturePath = "/profile-pictures/profile-picture-default.png";
+
     @Column(name = "medical_specialty")
     private Constants.MedicalSpecialty medicalSpecialty;
 

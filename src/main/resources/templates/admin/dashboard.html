@@ -1,18 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!--Bootstrap 5.3.3 CSS-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+  <!--Customs CSS-->
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/patient.css">
+
   <!--Tab-->
-  <title>Portal: Mi Salud | Admin</title>
+  <title>Portal: Mi Salud | admin</title>
   <link rel="shortcut icon" href="/img/tab-icon.png" type="image/x-icon">
+
 </head>
 <body>
-  <h1>Vista admin</h1>
-  <a href="/logout" class="btn btn-danger">Cerrar sesión</a>
+
+  <!--medical-navbar from shared_components-->  
+  <div th:replace="~{components/portal-bar :: portal-bar}"></div>
+  <div th:replace="~{components/admin-navbar :: admin-navbar}"></div>
+
+  <div class="container">
+    <div class="row">
+      <div class="welcome">
+        <div class="d-flex justify-content-center mt-5">
+          <div class="card w-100">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body p-5">
+                  <h1 class="card-title" th:text="#{hi}" aria-label="#{hi}"></h1>
+                  <h1><span th:text="${user.firstName}"></span></h1>
+                  <p class="card-text" th:text="#{welcomeDoctor}" aria-label="#{welcomeDoctor}"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <img src="/img/medical-home-preview.png" class="img-fluid rounded-end" alt="...">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="services mt-5">
+          <div class="row align-items-center mb-3">
+            <div class="col-md-12">
+              <h1 th:text="#{featuredServices}" aria-label="#{featuredServices}"></h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/calendar-icon.png" alt="" class="me-3" width="50">
+                <a href="/patient/appointments/schedule" th:text="#{featuredServices1}" aria-label="#{featuredServices1}"></a>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/scheduled-icon.png" alt="" class="me-3" width="50">
+                <a href="/patient/appointments" th:text="#{featuredServices2}" aria-label="#{featuredServices2}"></a>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/authorized-icon.png" alt="" class="me-3" width="50">
+                <a href="/patient/authorizations" th:text="#{featuredServices3}" aria-label="#{featuredServices3}"></a>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/document-icon.png" alt="" class="me-3" width="50">
+                <a href="/patient/results" th:text="#{featuredServices4}" aria-label="#{featuredServices4}"></a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
   <!--Bootstrap 5.3.3 JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--Bootstrap 5.3.3 CSS-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+  <!--Customs CSS-->
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/patient.css">
+
+  <!--Tab-->
+  <title>Portal: Mi Salud | admin</title>
+  <link rel="shortcut icon" href="/img/tab-icon.png" type="image/x-icon">
+
+</head>
+<body>
+
+  <!--medical-navbar from shared_components-->  
+  <div th:replace="~{components/portal-bar :: portal-bar}"></div>
+  <div th:replace="~{components/admin-navbar :: admin-navbar}"></div>
+
+  <div class="container my-5">
+    <h1>Registrar nuevo personal</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Registra un nuevo usuario para personal</h3>
+            <form th:action="@{/admin/register-staff}" method="post">
+            <div class="row">
+                <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="documentType" class="form-label">Tipo de Documento</label>
+                    <select class="form-select" id="documentType" name="documentType" required>
+                    <option value="CC">Cédula de Ciudadanía</option>
+                    <option value="TI">Tarjeta de Identidad</option>
+                    <option value="CE">Cédula de Extranjería</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="documentNumber" class="form-label">Número de Documento</label>
+                    <input type="text" class="form-control" id="documentNumber" name="documentNumber" required>
+                </div>
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Género</label>
+                    <select class="form-select" id="gender" name="gender" required>
+                    <option value="Male">Masculino</option>
+                    <option value="Female">Femenino</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Teléfono</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                </div>
+                </div>
+                <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="mb-3">
+                    <label for="department" class="form-label">Departamento</label>
+                    <input type="text" class="form-control" id="department" name="department" required>
+                </div>
+                <div class="mb-3">
+                    <label for="city" class="form-label">Ciudad</label>
+                    <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Rol</label>
+                    <select class="form-select" id="role" name="role" required>
+                    <option value="ROLE_SUPPORT_STAFF">Personal de Apoyo</option>
+                    <option value="ROLE_MEDICAL_STAFF">Personal Médico</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="medicalSpecialtyDiv" style="display: none;">
+                    <label for="medicalSpecialty" class="form-label">Especialidad Médica</label>
+                    <select class="form-select" id="medicalSpecialty" name="medicalSpecialty">
+                    <option value="GENERAL">General</option>
+                    <option value="DENTISTRY">Odontología</option>
+                    <option value="LABORATORY">Laboratorio</option>
+                    <option value="SPECIALIST">Especialista</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="horaryDiv" style="display: none;">
+                    <label for="horaryStart" class="form-label">Horario de Inicio</label>
+                    <input type="time" class="form-control" id="horaryStart" name="horaryStart">
+                    <label for="horaryEnd" class="form-label">Horario de Fin</label>
+                    <input type="time" class="form-control" id="horaryEnd" name="horaryEnd">
+                </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mt-1">
+                <div class="card-body">
+                    <h3>Asigna un cargo a un usuario existente</h3>
+                    <form th:action="@{/admin/assign-role}" method="get" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="documentNumber" class="form-control" placeholder="Buscar por número de documento" aria-label="Buscar por número de documento">
+                            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                        </div>
+                    </form>
+
+                    <div th:if="${patients != null}">
+                        <form th:action="@{/admin/assign-role}" method="post">
+                            <div class="mb-3">
+                                <label for="patient" class="form-label">Seleccionar Paciente</label>
+                                <select class="form-select" id="patient" name="patientId" required>
+                                    <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.firstName + ' ' + patient.lastName + ' - ' + patient.documentNumber}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newRole" class="form-label">Nuevo Rol</label>
+                                <select class="form-select" id="newRole" name="newRole" required>
+                                    <option value="ROLE_SUPPORT_STAFF">Personal de Apoyo</option>
+                                    <option value="ROLE_MEDICAL_STAFF">Personal Médico</option>
+                                </select>
+                            </div>
+                            <div class="mb-3" id="assignMedicalSpecialtyDiv" style="display: none;">
+                                <label for="assignMedicalSpecialty" class="form-label">Especialidad Médica</label>
+                                <select class="form-select" id="assignMedicalSpecialty" name="medicalSpecialty">
+                                    <option value="GENERAL">General</option>
+                                    <option value="DENTISTRY">Odontología</option>
+                                    <option value="LABORATORY">Laboratorio</option>
+                                    <option value="SPECIALIST">Especialista</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Asignar Rol</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const roleField = document.getElementById('role');
+        const medicalSpecialtyDiv = document.getElementById('medicalSpecialtyDiv');
+        const horaryDiv = document.getElementById('horaryDiv');
+
+        roleField.addEventListener('change', function () {
+            if (roleField.value === 'ROLE_MEDICAL_STAFF') {
+                medicalSpecialtyDiv.style.display = 'block';
+                horaryDiv.style.display = 'block';
+            } else {
+                medicalSpecialtyDiv.style.display = 'none';
+                horaryDiv.style.display = 'none';
+            }
+        });
+
+        const newRoleField = document.getElementById('newRole');
+        const assignMedicalSpecialtyDiv = document.getElementById('assignMedicalSpecialtyDiv');
+
+        newRoleField.addEventListener('change', function () {
+            if (newRoleField.value === 'ROLE_MEDICAL_STAFF') {
+                assignMedicalSpecialtyDiv.style.display = 'block';
+            } else {
+                assignMedicalSpecialtyDiv.style.display = 'none';
+            }
+        });
+    });
+  </script>
+  <!--Bootstrap 5.3.3 JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

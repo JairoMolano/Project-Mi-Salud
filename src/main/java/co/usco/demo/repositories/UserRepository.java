@@ -18,9 +18,11 @@ public interface UserRepository extends JpaRepository<UserModel, Long>{
 
     Optional<UserModel> findByDocumentNumberAndVerificationCode(String documentNumber, String verificationCode);
 
-    UserModel findByDocumentNumber(String documentNumber);
+    UserModel findUserByDocumentNumber(String documentNumber);
 
     List<UserModel> findByRolesRoleName(String roleName);
 
+    List<UserModel> findByRolesRoleNameAndDocumentNumber(String roleName, String documentNumber);
 
+    Optional<UserModel> findByDocumentNumber(String documentNumber);
 }

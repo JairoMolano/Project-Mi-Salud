@@ -37,7 +37,7 @@
     <form th:action="@{/patient/appointments/confirm-schedule}" method="post">
       <div class="mb-3">
           <select class="form-select" id="appointment" name="appointmentId" style="max-height: 200px; overflow-y: auto;">
-              <option th:each="appointment : ${appointments}" th:value="${appointment.id}" th:text="${appointment.date} + ' ' + ${#temporals.format(appointment.time, 'hh:mm a')} + ' - ' + ${appointment.doctor.firstName} + ' ' + ${appointment.doctor.lastName}"></option>
+              <option th:each="appointment : ${appointments}" th:value="${appointment.id}" th:text="${#temporals.format(appointment.date, 'dd/MM/yyyy')} + ' ' + ${#temporals.format(appointment.time, 'hh:mm a')} + ' - ' + ${appointment.doctor.firstName} + ' ' + ${appointment.doctor.lastName}"></option>
           </select>
       </div>
       <div class="action-buttons">

@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="patient-navbar" th:fragment="admin-navbar">
+      <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSecond" aria-controls="navbarSecond" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSecond">
+                  <ul class="navbar-nav nav-underline mx-auto">
+                        <li class="nav-item"></li>
+                          <a class="nav-link" th:href="@{/admin/dashboard}" th:text="#{home}" aria-label="#{home}" th:classappend="${currentUri.equals('/admin/dashboard')} ? 'active'"></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" th:href="@{/admin/support-staff}" th:text="#{supportStaff}" aria-label="#{supportStaff}" th:classappend="${currentUri.equals('/admin/support-staff')} ? 'active'"></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" th:href="@{/admin/medical-staff}" th:text="#{medicalStaff}" aria-label="#{medicalStaff}" th:classappend="${currentUri.equals('/admin/medical-staff')} ? 'active'"></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" th:href="@{/admin/register-staff}" th:text="#{registerStaff}" aria-label="#{registerStaff}" th:classappend="${currentUri.equals('/admin/register-staff')} ? 'active'"></a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+    </div>
+  
+
+
+  </div>
+</html>

@@ -11,17 +11,14 @@
                           <a class="nav-link" th:href="@{/medical-staff/dashboard}" th:text="#{home}" aria-label="#{home}" th:classappend="${currentUri.equals('/medical-staff/dashboard')} ? 'active'"></a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" th:href="@{/medical-staff/day-appointments}" th:text="#{dayÁppoiments}" aria-label="#{dayÁppoiments}" th:classappend="${currentUri.equals('/medical-staff/day-appointments')} ? 'active'"></a>
+                          <a class="nav-link" th:href="@{/medical-staff/day-appointments}" th:text="#{dayAppoiments}" aria-label="#{dayAppoiments}" th:classappend="${currentUri.equals('/medical-staff/day-appointments')} ? 'active'"></a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" th:href="@{/medical-staff/all-appointments}" th:text="#{dayÁppoiments}" aria-label="#{dayÁppoiments}" th:classappend="${currentUri.equals('/medical-staff/all-appointments')} ? 'active'"></a>
+                          <a class="nav-link" th:href="@{/medical-staff/all-appointments}" th:text="#{allAppointmentsBar}" aria-label="#{allAppointmentsBar}" th:classappend="${currentUri.equals('/medical-staff/all-appointments')} ? 'active'"></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/medical-staff/patients}" th:text="#{myPatients}" aria-label="#{myPatients}" th:classappend="${currentUri.equals('/medical-staff/patients')} ? 'active'"></a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link" th:href="@{/medical-staff/horary}" th:text="#{workingDay}" aria-label="#{workingDay}" th:classappend="${currentUri.equals('/medical-staff/medical-staff/horary')} ? 'active'"></a>
-                      </li>
                   </ul>
               </div>
           </div>

@@ -32,4 +32,10 @@ public interface AppointmentRepository extends JpaRepository<AppointmentModel, L
 
     @Query("SELECT DISTINCT a.patient FROM AppointmentModel a WHERE a.doctor = :doctor")
     List<UserModel> findDistinctPatientsByDoctor(@Param("doctor") UserModel doctor);
+
+    List<AppointmentModel> findByStatusAndDoctorAndDateNot(Constants.AppointmentStatus status, UserModel doctor, LocalDate today, Sort sort);
+
+    @Query("SELECT DISTINCT a.patient FROM AppointmentModel a WHERE a.doctor = :doctor AND a.patient.documentNumber = :documentNumber")
+    List<UserModel> findDistinctPatientsByDoctorAndDocumentNumber(@Param("doctor") UserModel doctor, @Param("documentNumber") String documentNumber);
+
 }

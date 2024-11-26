@@ -9,15 +9,67 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
   <!--Customs CSS-->
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/patient.css">
 
   <!--Tab-->
-  <title>Portal: Mi Salud | Support-staff</title>
+  <title>Portal: Mi Salud | support</title>
   <link rel="shortcut icon" href="/img/tab-icon.png" type="image/x-icon">
 
 </head>
 <body>
 
-  <h1>Vista Support-staff</h1>
+  <!--medical-navbar from shared_components-->  
+  <div th:replace="~{components/portal-bar :: portal-bar}"></div>
+  <div th:replace="~{components/support-navbar :: support-navbar}"></div>
+
+  <div class="container">
+    <div class="row">
+      <div class="welcome">
+        <div class="d-flex justify-content-center mt-5">
+          <div class="card w-100">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body p-5">
+                  <h1 class="card-title" th:text="#{hi}" aria-label="#{hi}"></h1>
+                  <h1><span th:text="${user.firstName}"></span></h1>
+                  <p class="card-text" th:text="#{welcomeSupportStaff}" aria-label="#{welcomeSupportStaff}"></p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <img src="/img/support-home-preview.png" class="img-fluid rounded-end" alt="...">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="services mt-5">
+          <div class="row align-items-center mb-3">
+            <div class="col-md-12">
+              <h1 th:text="#{featuredServices}" aria-label="#{featuredServices}"></h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/history-icon.png" alt="" class="me-3" width="50">
+                <a href="/patient/appointments/schedule" th:text="#{helpPatients}" aria-label="#{helpPatients}"></a>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card p-3 d-flex flex-row">
+                <img src="/img/authorized-icon.png" alt="" class="me-3" width="50">
+                <a href="/patient/appointments" th:text="#{authorizeOrders}" aria-label="#{authorizeOrders}"></a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
 
   <!--Bootstrap 5.3.3 JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

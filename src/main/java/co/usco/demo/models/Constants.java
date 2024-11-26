@@ -29,18 +29,18 @@ public class Constants {
         SPECIALIST;
     }
 
+    public enum OrderType {
+        MEDICATION,
+        LAB_APPOINTMENT,
+        SPECIALIST_APPOINTMENT;
+    }
+
     public enum OrderStatus {
         PENDING,
         REQUESTING,
         AUTHORIZED,
         COMPLETED,
         IN_DELIVERY;
-    }
-
-    public enum OrderType {
-        MEDICATION,
-        LAB_APPOINTMENT,
-        SPECIALIST_APPOINTMENT;
     }
 
     public enum AppointmentPlace {

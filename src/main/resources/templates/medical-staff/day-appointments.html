@@ -24,8 +24,13 @@
   <div th:replace="~{components/medical-navbar :: medical-navbar}"></div>
 
   <div class="container mt-5">
-    <h1 class="mb-3">Citas medicas programadas para hoy:</h1>
-    <h5>Citas del dia: <span class="badge bg-primary rounded-pill" th:text="${appointmentsCount}"></span> | Citas completadas del dia: <span class="badge bg-primary rounded-pill" th:text="${appointmentsCompleted}"></span></h5>
+    <h1 class="mb-3" th:text="#{appointmentsForToday}" aria-label="#{appointmentsForToday}"></h1>
+    <h5>
+      <span th:text="#{dayAppointments}" aria-label="#{dayAppointments}"></span>
+      <span class="badge rounded-pill text-bg-secondary" th:text="${appointmentsCount}"></span>
+      <span th:text="#{appointmentsCompleted}" aria-label="#{appointmentsCompleted}"></span>
+      <span class="badge rounded-pill text-bg-secondary" th:text="${appointmentsCompleted}"></span>
+    </h5>
     <hr>
     <div class="row d-flex g-3">
       <div class="col-md-6 mb-3" th:each="appointment : ${appointments}">
@@ -36,14 +41,13 @@
                     <strong th:text="#{date}" aria-label="#{date}"></strong> <span th:text="${#temporals.format(appointment.date, 'dd/MM/yyyy')}"></span><br>
                     <strong th:text="#{time}" aria-label="#{time}"></strong> <span th:text="${#temporals.format(appointment.time, 'hh:mm a')}"></span><br>
                     <strong th:text="#{place}" aria-label="#{place}"></strong> <span th:text="${#messages.msg('appointment.place.' + appointment.place)}"></span><br>
-                    <strong th:text="#{attendedBy}" aria-label="#{attendedBy}"></strong> <span th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}"></span><br>
-                    <strong th:text="#{attendedBy}" aria-label="#{attendedBy}"></strong> <span th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}"></span><br>
+                    <strong th:text="#{patient}" aria-label="#{patient}"></strong> <span th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}"></span><br>
                 </p>
                 <form th:action="@{/medical-staff/attending-appointments}" method="post">
                   <input type="hidden" name="appointmentId" th:value="${appointment.id}">
                   <div class="action-buttons d-flex justify-content-between">
                   <label for=""></label>
-                  <button type="submit" class="btn btn-primary">Atender</button>
+                  <button type="submit" class="btn btn-primary" th:text="#{attend}" aria-label="#{attend}"></button>
                   </div>
                 </form>
             </div>
@@ -51,8 +55,6 @@
       </div>
     </div>
   </div>
-
-
 
   <!--Bootstrap 5.3.3 JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

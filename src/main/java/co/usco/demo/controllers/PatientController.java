@@ -12,6 +12,7 @@ import co.usco.demo.services.AppointmentService;
 import co.usco.demo.services.ControllerHelperService;
 import co.usco.demo.services.DocumentService;
 import co.usco.demo.services.OrderService;
+import co.usco.demo.services.UserService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -30,6 +31,9 @@ public class PatientController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/dashboard");
@@ -39,7 +43,7 @@ public class PatientController {
     @GetMapping("/appointments")
     public String appointments(Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/appointments");
-        appointmentService.addUserAppointments(model);
+        appointmentService.addUserAppointments(model, userService.getSessionUser());
         return "patient/appointments";
     }
 
@@ -69,6 +73,7 @@ public class PatientController {
 
     @PostMapping("/appointments/cancel")
     public String cancelAppointment(@RequestParam Long appointmentId, Model model) {
+        System.out.println("Canceling appointment with id: " + appointmentId);
         appointmentService.cancelAppointmentAndHandleOrder(appointmentId);
         return "redirect:/patient/appointments";
     }
@@ -76,7 +81,7 @@ public class PatientController {
     @GetMapping("/authorizations")
     public String authorizations(Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/authorizations");
-        orderService.addUserOrders(model);
+        orderService.addUserOrders(model, userService.getSessionUser());
         return "patient/authorizations";
     }
 
@@ -95,7 +100,7 @@ public class PatientController {
     @GetMapping("/results")
     public String results(Model model, @RequestParam(defaultValue = "0") int page) {
         controllerHelperService.addCommonAttributes(model, "/patient/results");
-        documentService.addDocumentAttributesForCurrentUser(model, page, 9);
+        documentService.addDocumentAttributesForCurrentUser(model, page, 9, userService.getSessionUser());
         return "patient/results";
     }
 
@@ -109,8 +114,9 @@ public class PatientController {
     @GetMapping("/history")
     public String history(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String documentType) {
         controllerHelperService.addCommonAttributes(model, "/patient/history");
-        appointmentService.addUserAppointments(model);
-        documentService.addDocumentAttributesForFilteredResults(model, documentType, page, 3);
+        appointmentService.addUserAppointments(model, userService.getSessionUser());
+        orderService.addUserOrders(model, userService.getSessionUser());
+        documentService.addDocumentAttributesForCurrentUser(model, page, 3, userService.getSessionUser());
         return "patient/history";
     }
 

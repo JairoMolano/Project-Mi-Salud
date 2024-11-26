@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/styles/patient.css">
 
   <!--Tab-->
-  <title>Portal: Mi Salud | Medical-staff</title>
+  <title>Portal: Mi Salud | support</title>
   <link rel="shortcut icon" href="/img/tab-icon.png" type="image/x-icon">
 
 </head>
@@ -21,14 +21,11 @@
 
   <!--medical-navbar from shared_components-->  
   <div th:replace="~{components/portal-bar :: portal-bar}"></div>
-  <div th:replace="~{components/medical-navbar :: medical-navbar}"></div>
-
-  
+  <div th:replace="~{components/support-navbar :: support-navbar}"></div>
 
   <div class="container mt-5">
-    <h1 class="mb-4" th:text="#{yourPatients}" aria-label="#{yourPatients}"></h1>
-    
-    <form th:action="@{/medical-staff/patient-search}" method="get" class="mb-3">
+    <h1 class="mb-4" th:text="#{allPatientsTitle}" aria-label="#{allPatientsTitle}"></h1>
+    <form th:action="@{/support-staff/patient-search}" method="get" class="mb-3">
       <div class="input-group">
           <input type="text" name="documentNumber" class="form-control" th:placeholder="#{searchHolder}" aria-label="#{searchHolder}">
           <button class="btn btn-outline-secondary" type="submit" th:text="#{search}" aria-label="#{search}"></button>
@@ -52,7 +49,7 @@
           <td th:text="${patient.documentType}"></td>
           <td th:text="${patient.documentNumber}"></td>
           <td>
-            <form th:action="@{/medical-staff/patient-information}" method="post">
+            <form th:action="@{/support-staff/patient-information}" method="post">
               <input type="hidden" name="patientId" th:value="${patient.id}">
               <button type="submit" class="btn btn-primary" th:text="#{viewInformation}" aria-label="#{viewInformation}"></button>
             </form>

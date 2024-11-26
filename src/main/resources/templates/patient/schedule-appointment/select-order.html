@@ -33,14 +33,14 @@
       </div> 
       </div>
       <div class="col-md-6 mb-5">
-        <h1 th:text="#{selectAuthorizedOrder}" aria-label="#{selectAuthorizedOrder}"></h1>
+        <h1 th:text="#{selectAuthorizedOrder}" aria-label="#{selectAuthorizedOrder}"></h1><br>
     <form th:action="@{/patient/appointments/confirm-order}" method="post">
         <div class="mb-3">
             <select class="form-select" id="order" name="orderId" required>
                 <option value="" disabled selected th:text="#{selectOrder}" aria-label="#{selectOrder}"></option>
                 <option th:each="order : ${authorizedOrders}" 
                         th:value="${order.id}" 
-                        th:text="${order.orderType} + ' - ' + ${order.createdAt}"></option>
+                        th:text="${#messages.msg('order.type.' + order.orderType)} + ' - ' + ${order.createdAt}"></option>
             </select>
         </div>
         <input type="hidden" name="appointmentType" th:value="${appointmentType}" />
