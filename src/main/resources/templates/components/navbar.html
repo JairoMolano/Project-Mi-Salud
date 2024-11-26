@@ -15,16 +15,6 @@
                 <a th:text="#{home}" aria-label="#{home}" class="nav-link active" aria-current="page" th:href="@{/home/MiSalud}"></a>
               </li>
               <li class="nav-item dropdown">
-                <a  th:text="#{aboutUs}" aria-label="#{aboutUs}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
-                <ul class="dropdown-menu">
-                  <li><a th:text="#{whoWeAre}" aria-label="#{whoWeAre}" class="dropdown-item" href="#"></a></li>
-                  <li><a  th:text="#{ourInstallations}" aria-label="#{ourInstallations}" class="dropdown-item" href="#"></a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a th:text="#{contacts}" aria-label="#{contacts}" class="nav-link" th:href="@{/home/contacts}"></a>
-              </li>
-              <li class="nav-item dropdown">
                 <a  th:text="#{lenguage}" aria-label="#{lenguage}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" th:href="@{/common/change-language?lang=es}">Español</a></li>

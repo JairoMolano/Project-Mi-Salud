@@ -39,10 +39,18 @@
                 <hr>
                 <h6 th:text="#{status} + ${#messages.msg('order.status.' + order.status)}"></h6>
                 <div class="d-flex justify-content-between">
-                  <form th:action="@{/support-staff/authorize-order}" method="post">
+                  <form th:action="@{/support-staff/authorize-order}" method="post" id="authorizeForm">
                     <input type="hidden" name="orderId" th:value="${order.id}">
-                    <button type="submit" class="btn btn-primary" th:text="#{authorize}" aria-label="#{authorize}"></button>
-                  </form>
+                    <button type="button" class="btn btn-primary" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#confirmAuthorizeModal"
+                            th:data-order-id="${order.id}"
+                            th:data-order-description="${order.description}"
+                            th:data-order-doctor="${order.doctor.firstName + ' ' + order.doctor.lastName}"
+                            th:text="#{authorize}" 
+                            aria-label="#{authorize}">
+                    </button>
+                </form>
                   <form th:action="@{/support-staff/patient-information}" method="post">
                     <input type="hidden" name="patientId" th:value="${order.patient.id}">
                     <button type="submit" class="btn btn-primary">Ver informacion</button>
@@ -54,6 +62,65 @@
     </div>
 
   </div>
+
+
+
+  <div class="modal fade" id="confirmAuthorizeModal" tabindex="-1" aria-labelledby="confirmAuthorizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmAuthorizeModalLabel" th:text="#{confirmAuthorization}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p th:text="#{areYouSureAuthorize}" aria-label="#{areYouSureAuthorize}"></p>
+                <p><strong th:text="#{orderId}" aria-label="#{orderId}"></strong> <span id="modalOrderId"></span></p>
+                <p><strong th:text="#{description}" aria-label="#{description}"></strong> <span id="modalOrderDescription"></span></p>
+                <p><strong th:text="#{orderBy}" aria-label="#{orderBy}"></strong> <span id="modalOrderDoctor"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{cancel}" aria-label="#{cancel}"></button>
+                <button type="button" class="btn btn-primary" id="confirmAuthorizeButton" th:text="#{confirm}" aria-label="#{confirm}"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+  var authorizeModal = document.getElementById('confirmAuthorizeModal');
+  var confirmButton = document.getElementById('confirmAuthorizeButton');
+  var currentForm = null;
+
+  if (authorizeModal) {
+      authorizeModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget; // Botón que activó el modal
+          currentForm = button.closest('form'); // Encuentra el formulario asociado
+
+          // Obtén los datos del botón
+          var orderId = button.getAttribute('data-order-id');
+          var orderDescription = button.getAttribute('data-order-description');
+          var orderDoctor = button.getAttribute('data-order-doctor');
+
+          // Encuentra los elementos en el modal
+          var modalOrderId = authorizeModal.querySelector('#modalOrderId');
+          var modalOrderDescription = authorizeModal.querySelector('#modalOrderDescription');
+          var modalOrderDoctor = authorizeModal.querySelector('#modalOrderDoctor');
+
+          // Asigna los valores
+          modalOrderId.textContent = orderId;
+          modalOrderDescription.textContent = orderDescription;
+          modalOrderDoctor.textContent = orderDoctor;
+      });
+
+      // Maneja la confirmación del modal
+      confirmButton.addEventListener('click', function () {
+          if (currentForm) {
+              currentForm.submit(); // Envía el formulario asociado
+          }
+      });
+  }
+</script>
 
 
   <!--Bootstrap 5.3.3 JS-->

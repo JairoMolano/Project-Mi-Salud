@@ -24,7 +24,7 @@
   <div th:replace="~{components/support-navbar :: support-navbar}"></div>
 
   <div class="container mt-5">
-    <h2>INFORMACION DEL PACIENTE</h2>
+    <h2 th:text="#{patientInformation}" aria-label="#{patientInformation}"></h2>
     <hr>
     <div class="row mb-3">
         <div class="col-md-3">
@@ -33,11 +33,11 @@
                 <strong th:text="#{patientName}" aria-label="#{patientName}"></strong>
                 <span th:text="${patient.firstName} + ' ' + ${patient.lastName}"></span><br>
                 <strong th:text="#{documentType}" aria-label="#{documentType}"></strong>
-                <span th:text="${patient.documentType}"></span><br>
+                <span th:text="${#messages.msg('user.documentType.' + patient.documentType)}"></span><br>
                 <strong th:text="#{documentNumber}" aria-label="#{documentNumber}"></strong>
                 <span th:text="${patient.documentNumber}"></span><br>
                 <strong th:text="#{gender}" aria-label="#{gender}"></strong>
-                <span th:text="${patient.gender}"></span><br>
+                <span th:text="${#messages.msg('user.gender.' + patient.gender)}"></span><br>
                 <strong th:text="#{phone}" aria-label="#{phone}"></strong>
                 <span th:text="${patient.phoneNumber}"></span><br>
                 <strong th:text="#{email}" aria-label="#{email}"></strong>
@@ -47,9 +47,9 @@
         <div class="col-md-4">
             <div class="card mb-3">
                 <div class="card-body">
-                    <h2>Agenda una cita para el usuario</h2>
+                    <h2 th:text="#{scheduleAnAppointmentForPatient}" aria-label="#{scheduleAnAppointmentForPatient}"></h2>
                     <form action="">
-                        <button class="btn btn-primary">Agendar cita</button>
+                        <button class="btn btn-primary" th:text="#{scheduleAnAppointment}" aria-label="#{scheduleAnAppointment}"></button>
                     </form>
 
                 </div>
@@ -62,7 +62,7 @@
                         <input type="hidden" name="patientId" th:value="${patient.id}" />
                         <input type="hidden" name="redirectUrl" value="support-staff/patient" />
                         <div class="mb-3">
-                            <label for="uploadDocumentType" class="form-label">Tipo de Documento</label>
+                            <label for="uploadDocumentType" class="form-label" th:text="#{documentType}" aria-label="#{documentType}"></label>
                             <select class="form-select" id="uploadDocumentType" name="documentType" required>
                                 <option value="" disabled selected>Seleccione un tipo de documento</option>
                                 <option value="DIAGNOSTIC_IMAGE">Imagen Diagnóstica</option>
@@ -71,10 +71,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="uploadFile" class="form-label">Archivo</label>
+                            <label for="uploadFile" class="form-label" th:text="#{file}" aria-label="#{file}"></label>
                             <input type="file" class="form-control" id="uploadFile" name="file" required>
                         </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmUploadDocumentModal">Subir Documento</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmUploadDocumentModal" th:text="#{uploadDocument}" aria-label="#{uploadDocument}"></button>
                     </form>                       
                 </div>
             </div>
@@ -82,38 +82,37 @@
         <div class="col-md-5">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="mb-2">Editar Información del paciente</h2>
+                    <h2 class="mb-2" th:text="#{editPatientInformation}" aria-label="#{editPatientInformation}"></h2>
                     <form th:action="@{/support-staff/update-patient}" method="post">
                         <input type="hidden" name="patientId" th:value="${patient.id}" />
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label" th:text="#{email}" aria-label="#{email}"></label>
                             <input type="email" class="form-control" id="email" name="email" th:value="${patient.email}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">Teléfono</label>
+                            <label for="phoneNumber" class="form-label" th:text="#{phone}" aria-label="#{phone}"></label>
                             <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:value="${patient.phoneNumber}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="address" class="form-label">Dirección</label>
+                            <label for="address" class="form-label" th:text="#{address}" aria-label="#{address}"></label>
                             <input type="text" class="form-control" id="address" name="address" th:value="${patient.address}" required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="department" class="form-label">Departamento</label>
+                                <label for="department" class="form-label" th:text="#{department}" aria-label="#{department}"></label>
                                 <input type="text" class="form-control" id="department" name="department" th:value="${patient.department}" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="city" class="form-label">Ciudad</label>
+                                <label for="city" class="form-label" th:text="#{city}" aria-label="#{city}"></label>
                                 <input type="text" class="form-control" id="city" name="city" th:value="${patient.city}" required>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary" 
+                        <button type="button" class="btn btn-primary" th:text="#{saveChanges}" aria-label="#{saveChanges}"
             data-bs-toggle="modal" 
             data-bs-target="#confirmUpdateModal"
             th:data-patient-id="${patient.id}"
             th:data-patient-name="${patient.firstName + ' ' + patient.lastName}">
-        Guardar cambios
-    </button>
+        </button>
                     </form>
 
                 </div>
@@ -123,7 +122,7 @@
 
     <div class="row">
         <hr>
-        <h2 class="my-3">ORDENES POR AUTORIZAR DEL USUARIO</h2>
+        <h2 class="my-3" th:text="#{ordersToAuthorize}" aria-label="#{ordersToAuthorize}"></h2>
     <div class="col-md-12" th:each="order : ${pendingOrders}">
         <div class="card mb-4">
             <div class="card-body">
@@ -157,12 +156,12 @@
         <h2 th:text="#{patientHistory}" aria-label="#{patientHistory}"></h2>
       </div>
       <div class="row mb-3">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <h2 class="mb-4" th:text="#{lastAppointments}" aria-label="#{lastAppointments}"></h2>
           <div class="col-12 mb-5" th:if="${finishedAppointments.isEmpty()}">
             <div class="d-flex justify-content-center align-items-center flex-column mt-4">
               <div class="mt-3">
-                <img src="/img/no-have-preview.png" alt="doctor" class="img-fluid" style="width: 200px;">
+                <img src="/img/no-have-preview.png" alt="doctor" class="img-fluid" style="width: 400px;">
                 <div class="action-buttons d-flex justify-content-center align-items-center flex-column">
                   <h5 th:text="#{noAppointmentsHistory}" aria-label="#{noAppointmentsHistory}"></h5>
                 </div>

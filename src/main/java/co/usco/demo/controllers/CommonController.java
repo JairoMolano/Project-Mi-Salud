@@ -99,39 +99,29 @@ public class CommonController {
     }
 
     @PostMapping("/uploadProfilePicture")
-public String uploadProfilePicture(@RequestParam("profilePicture") MultipartFile file) {
-    try {
-        // Obtiene el usuario actual
-        UserModel user = userService.getSessionUser();
-        
-        // Verifica si el usuario ya tiene una foto de perfil que no sea la por defecto
-        String oldProfilePicturePath = user.getProfilePicturePath();
-        
-        // Si la foto de perfil no es la foto por defecto, elimina la imagen antigua
-        if (oldProfilePicturePath != null && !oldProfilePicturePath.equals("/profile-pictures/profile-picture-default.png")) {
-            // Extrae el nombre del archivo antiguo (de la ruta)
-            String oldFileName = oldProfilePicturePath.substring(oldProfilePicturePath.lastIndexOf("/") + 1);
-            Path oldFilePath = Paths.get("profile-pictures/" + oldFileName);
+    public String uploadProfilePicture(@RequestParam("profilePicture") MultipartFile file) {
+        try {
+            UserModel user = userService.getSessionUser();
+            String oldProfilePicturePath = user.getProfilePicturePath();
             
-            // Elimina la imagen antigua del sistema de archivos
-            Files.deleteIfExists(oldFilePath);
+            if (oldProfilePicturePath != null && !oldProfilePicturePath.equals("/profile-pictures/profile-picture-default.png")) {
+                String oldFileName = oldProfilePicturePath.substring(oldProfilePicturePath.lastIndexOf("/") + 1);
+                Path oldFilePath = Paths.get("profile-pictures/" + oldFileName);
+                
+                Files.deleteIfExists(oldFilePath);
+            }
+            
+            String newFileName = file.getOriginalFilename();
+            Path path = Paths.get("profile-pictures/" + newFileName);
+            Files.write(path, file.getBytes());
+
+            user.setProfilePicturePath("/profile-pictures/" + newFileName);
+            userService.save(user);
+
+            return "redirect:/common/user-profile";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
         }
-        
-        // Guarda la nueva imagen en el sistema de archivos
-        String newFileName = file.getOriginalFilename();
-        Path path = Paths.get("profile-pictures/" + newFileName);
-        Files.write(path, file.getBytes());
-
-        // Actualiza la ruta de la foto de perfil en la base de datos
-        user.setProfilePicturePath("/profile-pictures/" + newFileName);
-        userService.save(user);
-
-        return "redirect:/common/user-profile";
-    } catch (IOException e) {
-        e.printStackTrace();
-        return "error";
     }
-}
-
-
 }

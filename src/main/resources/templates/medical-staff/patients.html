@@ -49,7 +49,7 @@
         <tr th:each="patient : ${patients}">
           <td><img th:src="@{${patient.profilePicturePath}}" alt="profile picture" class="img-fluid rounded-circle" style="width: 30px; height: 30px;"><br></td>
           <td th:text="${patient.firstName} + ' ' + ${patient.lastName}"></td>
-          <td th:text="${patient.documentType}"></td>
+          <td th:text="${#messages.msg('user.documentType.' + patient.documentType)}"></td>
           <td th:text="${patient.documentNumber}"></td>
           <td>
             <form th:action="@{/medical-staff/patient-information}" method="post">

@@ -17,37 +17,39 @@
   <div th:replace="~{components/auth-nav :: auth-nav}"></div>
   <!--Login form-->
   <div class="container mt-5 align-items-center justify-content-center">
-    <div class="card">
-      <div class="card-body">
-        <h1 th:text="#{login}" aria-label="#{login}" class="mb-3 py-3 text-center"></h1>
-        <form th:action="@{/auth/login}" method="post">
-          <div class="mb-3">
-            <label th:text="#{documentType}" aria-label="#{documentType}" for="documentType" class="form-label"></label>
-            <select class="form-select" id="documentType" name="documentType" required>
-              <option th:text="#{cc}" aria-label="#{cc}" value="cc"></option>
-              <option th:text="#{ti}" aria-label="#{ti}" value="ti"></option>
-              <option th:text="#{ce}" aria-label="#{ce}" value="ce"></option>
-              <option th:text="#{passport}" aria-label="#{passport}" value="passport"></option>
-            </select>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h1 th:text="#{login}" aria-label="#{login}" class="mb-3 py-3 text-center"></h1>
+          <form th:action="@{/auth/login}" method="post">
+            <div class="mb-3">
+              <label th:text="#{documentType}" aria-label="#{documentType}" for="documentType" class="form-label"></label>
+              <select class="form-select" id="documentType" name="documentType" required>
+                <option th:text="#{cc}" aria-label="#{cc}" value="cc"></option>
+                <option th:text="#{ti}" aria-label="#{ti}" value="ti"></option>
+                <option th:text="#{ce}" aria-label="#{ce}" value="ce"></option>
+                <option th:text="#{passport}" aria-label="#{passport}" value="passport"></option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label th:text="#{documentNumber}" aria-label="#{documentNumber}" for="documentNumber" class="form-label"></label>
+              <input type="text" class="form-control" id="documentNumber" name="documentNumber" required>
+            </div>
+            <div class="mb-3">
+              <label th:text="#{password}" aria-label="#{password}" for="password" class="form-label"></label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div th:if="${session.error != null}" class="alert alert-danger" role="alert">
+              <span th:text="${session.error}"></span>
+            </div>     
+            <div class="d-grid">
+              <button th:text="#{login}" aria-label="#{login}" type="submit" class="btn btn-primary"></button>
+            </div>
+          </form>
+          <br>
+          <div class="text-center">
+            <a th:text="#{dontHaveAccount}" aria-label="#{dontHaveAccount}" th:href="@{/auth/register}"></a>
           </div>
-          <div class="mb-3">
-            <label th:text="#{documentNumber}" aria-label="#{documentNumber}" for="documentNumber" class="form-label"></label>
-            <input type="text" class="form-control" id="documentNumber" name="documentNumber" required>
-          </div>
-          <div class="mb-3">
-            <label th:text="#{password}" aria-label="#{password}" for="password" class="form-label"></label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
-          <div th:if="${session.error != null}" class="alert alert-danger" role="alert">
-            <span th:text="${session.error}"></span>
-          </div>     
-          <div class="d-grid">
-            <button th:text="#{login}" aria-label="#{login}" type="submit" class="btn btn-primary"></button>
-          </div>
-        </form>
-        <br>
-        <div class="text-center">
-          <a th:text="#{dontHaveAccount}" aria-label="#{dontHaveAccount}" th:href="@{/auth/register}"></a>
         </div>
       </div>
     </div>

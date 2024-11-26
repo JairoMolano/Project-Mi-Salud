@@ -13,9 +13,4 @@ public class HomeController {
         return "pages/home";
     }
 
-    @GetMapping("/contacts")
-    public String contacts() {
-        return "pages/contacts";
-    }
-
 }

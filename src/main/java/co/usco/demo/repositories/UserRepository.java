@@ -11,8 +11,6 @@ import co.usco.demo.models.UserModel;
 public interface UserRepository extends JpaRepository<UserModel, Long>{
 
     Optional<UserModel> findByDocumentNumberAndDocumentType(String documentNumber, String documentType);
-
-    UserModel findByEmail(String email);
     
     boolean existsByDocumentTypeAndDocumentNumber(String documentType, String documentNumber);
 

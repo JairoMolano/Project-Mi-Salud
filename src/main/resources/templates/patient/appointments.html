@@ -57,7 +57,7 @@
                                     <button th:text="#{moreDetails}" aria-label="#{moreDetails}" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal" th:data-appointment-id="${appointment.id}" th:data-appointment-place="${#messages.msg('appointment.place.' + appointment.place)}" th:data-appointment-date="${#temporals.format(appointment.date, 'dd/MM/yyyy')}" th:data-appointment-time="${#temporals.format(appointment.time, 'hh:mm a')}" th:data-appointment-doctor="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}"></button>
                                     <form th:action="@{/patient/appointments/cancel}" method="post" class="d-inline">
                                         <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
-                                        <button th:text="#{cancel}" aria-label="#{cancel}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal" th:data-appointment-id="${appointment.id}" th:data-appointment-place="${appointment.place}" th:data-appointment-date="${appointment.date}" th:data-appointment-time="${#temporals.format(appointment.time, 'hh:mm a')}" th:data-appointment-doctor="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}"></button>
+                                        <button th:text="#{cancel}" aria-label="#{cancel}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal" th:data-appointment-id="${appointment.id}" th:data-appointment-place="${#messages.msg('appointment.place.' + appointment.place)}" th:data-appointment-date="${appointment.date}" th:data-appointment-time="${#temporals.format(appointment.time, 'hh:mm a')}" th:data-appointment-doctor="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}"></button>
                                     </form>
                                 </div>
                             </div>
@@ -164,7 +164,7 @@
                             <div class="modal-body">
                                 <p><strong th:text="#{date}" aria-label="#{date}"></strong> <span id="viewAppointmentDateFinished"></span></p>
                                 <p><strong th:text="#{time}" aria-label="#{time}"></strong> <span id="viewAppointmentTimeFinished"></span></p>
-                                <p><strong th:text="#{place}" aria-label="#{place}"></strong> <span id="viewAppointmentPlace"></span></p>
+                                <p><strong th:text="#{place}" aria-label="#{place}"></strong> <span id="viewAppointmentPlaceFinished"></span></p>
                                 <p><strong th:text="#{attendedBy}" aria-label="#{attendedBy}"></strong> <span id="viewAppointmentDoctorFinished"></span></p>
                             </div>
                             <div class="modal-footer">

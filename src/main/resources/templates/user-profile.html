@@ -50,7 +50,7 @@
             <p><strong th:text="#{user}" aria-label="#{user}"></strong> <span th:text="${#messages.msg('user.rol.' + roleNames)}"></span></p>
             <p><strong th:text="#{names}" aria-label="#{names}"></strong> <span th:text="${user.firstName}"></span></p>
             <p><strong th:text="#{lastNames}" aria-label="#{lastNames}"></strong> <span th:text="${user.lastName}"></span></p>
-            <p><strong th:text="#{documentType}" aria-label="#{documentType}"></strong> <span th:text="${user.documentType}"></span></p>
+            <p><strong th:text="#{documentType}" aria-label="#{documentType}"></strong> <span th:text="${#messages.msg('user.documentType.' + user.documentType)}"></span></p>
             <p><strong th:text="#{documentNumber}" aria-label="#{documentNumber}"></strong> <span th:text="${user.documentNumber}"></span></p>
             <hr>
             <h2 th:text="#{contactInformation}" aria-label="#{contactInformation}"></h2>

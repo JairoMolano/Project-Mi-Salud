@@ -36,11 +36,11 @@
                 <strong th:text="#{patientName}" aria-label="#{patientName}"></strong>
                 <span th:text="${patient.firstName} + ' ' + ${patient.lastName}"></span><br>
                 <strong th:text="#{documentType}" aria-label="#{documentType}"></strong>
-                <span th:text="${patient.documentType}"></span><br>
+                <span th:text="${#messages.msg('user.documentType.' + patient.documentType)}"></span><br>
                 <strong th:text="#{documentNumber}" aria-label="#{documentNumber}"></strong>
                 <span th:text="${patient.documentNumber}"></span><br>
                 <strong th:text="#{gender}" aria-label="#{gender}"></strong>
-                <span th:text="${patient.gender}"></span><br>
+                <span th:text="${#messages.msg('user.gender.' + patient.gender)}"></span><br>
                 <strong th:text="#{phone}" aria-label="#{phone}"></strong>
                 <span th:text="${patient.phoneNumber}"></span><br>
                 <strong th:text="#{email}" aria-label="#{email}"></strong>

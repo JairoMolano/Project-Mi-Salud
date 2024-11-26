@@ -2,16 +2,10 @@
   <footer th:fragment="footer" id="footer" class="footer py-5">
     <div class="container">
       <div class="row">
-        <div class="col-2">
+        <div class="col-md-3 mb-5">
           <img src="/img/logo-2.png" width="180" height="120" alt="">
         </div>
-        <div class="col-2">
-          <a th:text="#{home}" aria-label="#{home}" th:href="@{/home/MiSalud}"></a><br>
-          <a th:text="#{whoWeAre}" aria-label="#{whoWeAre}" href=""></a><br>
-          <a th:text="#{ourInstallations}" aria-label="#{fourInstallations}" href=""></a><br>
-          <a th:text="#{contacts}" aria-label="#{contacts}" th:href="@{/home/contacts}"></a><br>
-        </div>
-        <div class="col-3">
+        <div class="col-md-3 mb-5">
           <h3 th:text="#{attentionLines}" aria-label="#{attentionLines}"></h3>
           <hr>
           <p>Linea nacional: 0000</p>
@@ -23,7 +17,7 @@
           <p>Neiva: 0000</p>
           <p>Cartagena: 0000</p>
         </div>
-        <div class="col-3">
+        <div class="col-md-3 mb-5">
           <h3 th:text="#{offices}" aria-label="#{offices}"></h3>
           <hr>
           <p>Bogota</p>
@@ -33,7 +27,7 @@
           <p>Neiva</p>
           <p>Carrera 00 #00-00</p>
         </div>
-        <div class="col-2">
+        <div class="col-md-3">
           <h3 th:text="#{socialNetworks}" aria-label="#{socialNetworks}"></h3>
           <hr>
           <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i> Facebook</a><br>
