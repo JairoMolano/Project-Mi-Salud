@@ -3,7 +3,6 @@ package co.usco.demo.controllers;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import co.usco.demo.models.Constants;
 import co.usco.demo.models.UserModel;
 import co.usco.demo.services.ControllerHelperService;
@@ -114,6 +112,5 @@ public class AdminController {
         userService.assignRole(patientId, newRole, medicalSpecialty);
         return "redirect:/admin/register-staff";
     }
-
 
 }
