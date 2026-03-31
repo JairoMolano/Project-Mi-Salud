@@ -1,6 +1,5 @@
 package co.usco.demo.controllers;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import co.usco.demo.models.Constants;
 import co.usco.demo.models.UserModel;
 import co.usco.demo.services.ControllerHelperService;
 import co.usco.demo.services.UserService;
@@ -32,7 +30,7 @@ public class AdminController {
     }
 
     @GetMapping("/support-staff")
-    public String patients(Model model) {
+    public String supportStaff(Model model) {
         controllerHelperService.addCommonAttributes(model, "/admin/support-staff");
         model.addAttribute("patients", userService.getAllUsersByRol("ROLE_SUPPORT_STAFF"));
         return "admin/support-staff";
@@ -46,7 +44,7 @@ public class AdminController {
     }
 
     @GetMapping("/register-staff")
-    public String registerStaff(Model model) {
+    public String registerStaffForm(Model model) {
         controllerHelperService.addCommonAttributes(model, "/admin/register-staff");
         return "admin/register-staff";
     }
@@ -67,6 +65,7 @@ public class AdminController {
                                 @RequestParam(required = false) String medicalSpecialty,
                                 @RequestParam(required = false) String horaryStart,
                                 @RequestParam(required = false) String horaryEnd) {
+
         UserModel user = UserModel.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -82,26 +81,15 @@ public class AdminController {
                 .userActive(true)
                 .build();
 
-        if (role.equals("ROLE_MEDICAL_STAFF")) {
-            user.setMedicalSpecialty(Constants.MedicalSpecialty.valueOf(medicalSpecialty));
-            user.setHoraryStart(LocalTime.parse(horaryStart));
-            user.setHoraryEnd(LocalTime.parse(horaryEnd));
-        }
-
-        userService.registerStaff(user, role);
+        userService.registerStaff(user, role, medicalSpecialty, horaryStart, horaryEnd);
         return "redirect:/admin/register-staff";
     }
 
-
     @GetMapping("/assign-role")
-    public String searchPatient(@RequestParam String documentNumber, Model model) {
+    public String searchPatientForRole(@RequestParam String documentNumber, Model model) {
         controllerHelperService.addCommonAttributes(model, "/admin/register-staff");
         Optional<UserModel> patient = userService.findByDocumentNumber(documentNumber);
-        if (patient.isPresent()) {
-            model.addAttribute("patients", List.of(patient.get()));
-        } else {
-            model.addAttribute("patients", null);
-        }
+        model.addAttribute("patients", patient.map(List::of).orElse(null));
         return "admin/register-staff";
     }
 

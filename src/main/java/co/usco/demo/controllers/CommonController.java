@@ -1,8 +1,6 @@
 package co.usco.demo.controllers;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import co.usco.demo.services.AppointmentService;
 import co.usco.demo.services.ControllerHelperService;
 import co.usco.demo.services.DocumentService;
 import co.usco.demo.services.UserService;
-import java.nio.file.Path;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -45,14 +42,16 @@ public class CommonController {
     private AppointmentService appointmentService;
 
     @GetMapping("/change-language")
-    public String changeLanguage(@RequestParam("lang") String lang, HttpServletRequest request, HttpServletResponse response) {
+    public String changeLanguage(@RequestParam("lang") String lang,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         Locale newLocale = Locale.forLanguageTag(lang);
         localeResolver.setLocale(request, response, newLocale);
         return "redirect:" + controllerHelperService.getPreviousPage(request);
     }
 
     @GetMapping("/upload-document")
-    public String uploadDocument(Model model) {
+    public String uploadDocumentForm(Model model) {
         controllerHelperService.addCommonAttributes(model, "/medical-staff/upload-document");
         return "medical-staff/upload-document";
     }
@@ -63,17 +62,16 @@ public class CommonController {
                                  @RequestParam("documentType") Constants.DocumentType documentType,
                                  @RequestParam("patientId") Long patientId) throws IOException {
         documentService.uploadFile(file, documentType, patientId);
-        
         controllerHelperService.addCommonAttributes(model, "/medical-staff/patients");
         model.addAttribute("patient", userService.getUserById(patientId));
         return "medical-staff/patient-information";
     }
 
     @PostMapping("/upload-document-appointment")
-    public String uploadDocumentAppointment(Model model,
-                                            @RequestParam("file") MultipartFile file,
-                                            @RequestParam("documentType") Constants.DocumentType documentType,
-                                            @RequestParam("appointmentId") Long appointmentId) throws IOException {
+    public String uploadDocumentForAppointment(Model model,
+                                               @RequestParam("file") MultipartFile file,
+                                               @RequestParam("documentType") Constants.DocumentType documentType,
+                                               @RequestParam("appointmentId") Long appointmentId) throws IOException {
         UserModel patient = appointmentService.getPatientByAppointmentId(appointmentId);
         documentService.uploadFile(file, documentType, patient.getId());
         controllerHelperService.addCommonAttributes(model, "/medical-staff/day-appointments");
@@ -88,7 +86,7 @@ public class CommonController {
 
     @GetMapping("/user-profile")
     public String profile(Model model) {
-        controllerHelperService.addCommonAttributes(model, "/medical-staff/upload-document");
+        controllerHelperService.addCommonAttributes(model, "/common/user-profile");
         UserModel user = userService.getSessionUser();
         model.addAttribute("user", user);
         String roleNames = user.getRoles().stream()
@@ -102,26 +100,12 @@ public class CommonController {
     public String uploadProfilePicture(@RequestParam("profilePicture") MultipartFile file) {
         try {
             UserModel user = userService.getSessionUser();
-            String oldProfilePicturePath = user.getProfilePicturePath();
-            
-            if (oldProfilePicturePath != null && !oldProfilePicturePath.equals("/profile-pictures/profile-picture-default.png")) {
-                String oldFileName = oldProfilePicturePath.substring(oldProfilePicturePath.lastIndexOf("/") + 1);
-                Path oldFilePath = Paths.get("profile-pictures/" + oldFileName);
-                
-                Files.deleteIfExists(oldFilePath);
-            }
-            
-            String newFileName = file.getOriginalFilename();
-            Path path = Paths.get("profile-pictures/" + newFileName);
-            Files.write(path, file.getBytes());
-
-            user.setProfilePicturePath("/profile-pictures/" + newFileName);
-            userService.save(user);
-
+            userService.updateProfilePicture(user, file);
             return "redirect:/common/user-profile";
         } catch (IOException e) {
             e.printStackTrace();
             return "error";
         }
     }
+
 }

@@ -1,6 +1,9 @@
 package co.usco.demo.controllers;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import co.usco.demo.models.Constants;
+import co.usco.demo.models.OrderModel;
 import co.usco.demo.services.AppointmentService;
 import co.usco.demo.services.ControllerHelperService;
 import co.usco.demo.services.DocumentService;
@@ -34,6 +38,13 @@ public class PatientController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MessageSource messageSource;
+
+    private String getMessage(String key) {
+        return messageSource.getMessage(key, null, LocaleContextHolder.getLocale());
+    }
+
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/dashboard");
@@ -48,7 +59,7 @@ public class PatientController {
     }
 
     @GetMapping("/appointments/schedule")
-    public String scheduleAppointment(Model model) {
+    public String scheduleAppointmentForm(Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/appointments");
         return "patient/schedule-appointment/select-type";
     }
@@ -56,24 +67,52 @@ public class PatientController {
     @PostMapping("/appointments/schedule")
     public String scheduleAppointment(@RequestParam Constants.MedicalSpecialty appointmentType, Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/appointments");
-        return appointmentService.handleScheduleAppointment(appointmentType, model);
+
+        if (appointmentType == Constants.MedicalSpecialty.LABORATORY
+                || appointmentType == Constants.MedicalSpecialty.SPECIALIST) {
+
+            List<OrderModel> authorizedOrders = appointmentService.getAuthorizedOrdersForAppointmentType(
+                    appointmentType, userService.getSessionUser());
+
+            if (authorizedOrders.isEmpty()) {
+                model.addAttribute("errorMessage", getMessage("dontHaveOrderAuthorization"));
+                return "patient/schedule-appointment/select-type";
+            }
+
+            model.addAttribute("appointmentType", appointmentType);
+            model.addAttribute("authorizedOrders", authorizedOrders);
+            return "patient/schedule-appointment/select-order";
+        }
+
+        if (appointmentService.userHasAppointmentOfType(appointmentType)) {
+            model.addAttribute("errorMessage", getMessage("alreadyAppointmentScheduled"));
+            return "patient/schedule-appointment/select-type";
+        }
+
+        model.addAttribute("appointments", appointmentService.getAvailableAppointmentsByType(appointmentType));
+        return "patient/schedule-appointment/select-appointment";
     }
 
     @PostMapping("/appointments/confirm-order")
-    public String confirmAppointment(@RequestParam Long orderId, @RequestParam Constants.MedicalSpecialty appointmentType, Model model, HttpSession session) {
+    public String confirmOrder(@RequestParam Long orderId,
+                               @RequestParam Constants.MedicalSpecialty appointmentType,
+                               Model model,
+                               HttpSession session) {
         controllerHelperService.addCommonAttributes(model, "/patient/appointments");
-        return appointmentService.handleConfirmAppointmentOrder(orderId, appointmentType, model, session);
+        OrderModel order = orderService.getOrderById(orderId);
+        session.setAttribute("orderId", order.getId());
+        model.addAttribute("appointments", appointmentService.getAvailableAppointmentsByType(appointmentType));
+        return "patient/schedule-appointment/select-appointment";
     }
 
     @PostMapping("/appointments/confirm-schedule")
-    public String confirmAppointment(@RequestParam Long appointmentId, Model model, HttpSession session) {
+    public String confirmSchedule(@RequestParam Long appointmentId, HttpSession session) {
         appointmentService.confirmAndScheduleAppointment(appointmentId, session);
         return "redirect:/patient/appointments";
     }
 
     @PostMapping("/appointments/cancel")
-    public String cancelAppointment(@RequestParam Long appointmentId, Model model) {
-        System.out.println("Canceling appointment with id: " + appointmentId);
+    public String cancelAppointment(@RequestParam Long appointmentId) {
         appointmentService.cancelAppointmentAndHandleOrder(appointmentId);
         return "redirect:/patient/appointments";
     }
@@ -86,13 +125,18 @@ public class PatientController {
     }
 
     @PostMapping("/authorizations/proceed")
-    public String proceedToAppointment(@RequestParam("orderType") String orderType, Model model) {
-        controllerHelperService.addCommonAttributes(model, "/patient/appointments");
-        return orderService.getRedirectionPathBasedOnOrderType(orderType);
+    public String proceedFromAuthorization(@RequestParam("orderType") String orderType) {
+        if ("MEDICATION".equals(orderType)) {
+            return "redirect:/patient/medicines";
+        } else if ("SPECIALIST_APPOINTMENT".equals(orderType) || "LAB_APPOINTMENT".equals(orderType)) {
+            return "redirect:/patient/appointments/schedule";
+        } else {
+            return "redirect:/patient/appointments";
+        }
     }
 
     @PostMapping("/authorizations/request-authorization")
-    public String requestAuthorization(@RequestParam Long orderId, Model model) {
+    public String requestAuthorization(@RequestParam Long orderId) {
         orderService.markOrderAsPending(orderService.getOrderById(orderId));
         return "redirect:/patient/authorizations";
     }
@@ -105,14 +149,16 @@ public class PatientController {
     }
 
     @GetMapping("/filter-results")
-    public String filterDocument(@RequestParam(required = false) String documentType, @RequestParam(defaultValue = "0") int page, Model model) {
+    public String filterResults(@RequestParam(required = false) String documentType,
+                                @RequestParam(defaultValue = "0") int page,
+                                Model model) {
         controllerHelperService.addCommonAttributes(model, "/patient/results");
         documentService.addDocumentAttributesForFilteredResults(model, documentType, page, 9);
         return "patient/results";
     }
 
     @GetMapping("/history")
-    public String history(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String documentType) {
+    public String history(Model model, @RequestParam(defaultValue = "0") int page) {
         controllerHelperService.addCommonAttributes(model, "/patient/history");
         appointmentService.addUserAppointments(model, userService.getSessionUser());
         orderService.addUserOrders(model, userService.getSessionUser());
@@ -128,9 +174,9 @@ public class PatientController {
     }
 
     @PostMapping("/medicines/request")
-    public String requestMedicine(@RequestParam Long orderId, Model model) {
+    public String requestMedicine(@RequestParam Long orderId) {
         orderService.markOrderAsInDelivery(orderId);
         return "redirect:/patient/medicines";
     }
-    
+
 }
